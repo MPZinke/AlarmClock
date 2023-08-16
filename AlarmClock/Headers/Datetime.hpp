@@ -1,3 +1,5 @@
+
+
 class Datetime
 {
 	private:
@@ -5,9 +7,7 @@ class Datetime
 		uint8_t _month;
 		uint8_t _day;
 
-		uint8_t _hour;
-		uint8_t _minute;
-		uint8_t _second;
+		unsigned long _start_of_day;
 
 	public:
 		enum
@@ -26,10 +26,14 @@ class Datetime
 			DECEMBER=12
 		};
 
-		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17, uint8_t hour=0, uint8_t minute=0,
-			uint8_t second=0
-		);
+		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
 
+		void set_time(uint8_t hour, uint8_t minute);
+		void set_hour(uint8_t hour);
+		void set_minute(uint8_t minute);
+
+		operator Time();
+		void operator!();
 		void operator++();
 
 		friend bool operator==(Alarm& alarm, Datetime& datetime);
