@@ -1,10 +1,30 @@
 
 
+#include <stdint.h>
+
+
 class Time
 {
 	public:
-		Time(unsigned long timestamp);
+		Time(unsigned long duration_seconds);
+		// Time();
 		Time(uint8_t hour=0, uint8_t minute=0, uint8_t second=0);
+
+		uint8_t hour();
+		uint8_t minute();
+		uint8_t second();
+
+		// ———— OPERATORS ———— //
+		operator unsigned long() const;
+
+		Time operator+(unsigned long duration_seconds);
+		Time& operator+=(unsigned long duration_seconds);
+
+		bool operator==(Time& right);
+		bool operator>(Time& right);
+		bool operator>=(Time& right);
+		bool operator<(Time& right);
+		bool operator<=(Time& right);
 
 	private:
 		uint8_t _hour;

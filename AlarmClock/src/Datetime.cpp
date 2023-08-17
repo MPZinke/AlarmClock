@@ -3,8 +3,11 @@
 #include "../Headers/Datetime.hpp"
 
 
+#include "Arduino.h"
+
+
 Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
-: _year{year}, _month{month}, _day{day}, _start_of_day{millis()}
+: Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis() / 1000}
 {
 	// assert(2000 < _year && _year < 2400);  // Since I didn't code the 400 year rule for leap years
 	assert(0 < _month && _month < 13);
@@ -18,7 +21,7 @@ Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/*
 
 void set_time(uint8_t hour, uint8_t minute, uint8_t second/* =0 */)
 {
-	_start_of_day = millis() - (hour * 3600000) - (minute * 60000) - second;
+	_start_of_day = millis() - (hour * 3600) - (minute * 60) - second;
 }
 
 
@@ -27,11 +30,11 @@ void set_hour(uint8_t hour)
 NOTES: Zeroes seconds.
 */
 {
-	unsigned long current_timestamp = millis();
+	unsigned long current_timestamp = millis() / 1000;
 	unsigned long time_delta = current_timestamp - _start_of_day;
-	// Start of Day = Current Timestamp in milliseconds - New Hour in milliseconds - Prior Minute in milliseconds
+	// Start of Day = Current Timestamp in seconds - New Hour in seconds - Prior Minute in seconds
 	// Can also use `_start_of_day = current_timestamp - (hour * 3600000) - (time_delta % 3600000) / 60000;`
-	_start_of_day = current_timestamp - (hour * 3600000) - (time_delta - ((time_delta / 3600000) * 3600000)) / 60000;
+	_start_of_day = current_timestamp - (hour * 3600) - (time_delta - ((time_delta / 3600) * 3600)) / 60;
 }
 
 
@@ -40,16 +43,16 @@ void set_minute(uint8_t minute)
 NOTES: Zeroes seconds.
 */
 {
-	unsigned long current_timestamp = millis();
+	unsigned long current_timestamp = millis() / 1000;
 	unsigned long time_delta = current_timestamp - _start_of_day;
-	// Start of Day = Current Timestamp in milliseconds - Prior Hour in milliseconds - Prior Minute in milliseconds
-	_start_of_day = current_timestamp - ((time_delta / 3600000) * 3600000) - (minute * 60000);
+	// Start of Day = Current Timestamp in seconds - Prior Hour in seconds - Prior Minute in seconds
+	_start_of_day = current_timestamp - ((time_delta / 3600) * 3600) - (minute * 60);
 }
 
 
 Datetime::operator Time()
 {
-	return Time(_start_of_day);
+	return Time((millis() / 1000) - _start_of_day);
 }
 
 

@@ -1,4 +1,11 @@
 
+
+#include <stdint.h>
+
+
+class Datetime;
+
+
 class Alarm
 {
 	private:
@@ -29,6 +36,6 @@ class AlarmInstance: Alarm
 		void update(Datetime& datetime);
 		void update(uint8_t hour, uint8_t minute);
 
-		friend bool operator==(AlarmInstant& alarm_instance, Datetime& datetime);
-		friend bool operator==(Datetime& datetime, AlarmInstant& alarm_instance);
+		friend bool operator==(AlarmInstance& alarm_instance, Datetime& datetime);
+		friend bool operator==(Datetime& datetime, AlarmInstance& alarm_instance);
 };
