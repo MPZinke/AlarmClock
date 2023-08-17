@@ -6,7 +6,7 @@
 Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : _year{year}, _month{month}, _day{day}, _start_of_day{millis()}
 {
-	// assert(_year < 2400);  // Since I didn't code the 400 year rule for leap years
+	// assert(2000 < _year && _year < 2400);  // Since I didn't code the 400 year rule for leap years
 	assert(0 < _month && _month < 13);
 	assert(_day <= 28
 		|| (_day <= 29 && _month == FEBRUARY && _year & 0b11 == 0)
@@ -67,6 +67,7 @@ void Datetime::operator++()
 NOTES: Ignores the 400 year rule for leap years.
 */
 {
+	_start_of_day = millis();
 	_day++;
 
 	if(_day > 31
