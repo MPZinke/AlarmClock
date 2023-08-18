@@ -27,7 +27,7 @@ class Datetime: public Date, public Time
 
 		operator Date();
 		operator Time();
-		void operator!();
+		Datetime& operator=(unsigned long timestamp);
 		void operator++();
 
 		friend bool operator==(Alarm& alarm, Datetime& datetime);

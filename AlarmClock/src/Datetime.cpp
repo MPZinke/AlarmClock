@@ -56,12 +56,13 @@ Datetime::operator Time()
 }
 
 
-void Datetime::operator!()
-/*
-SUMMARY: Zeroes the time.
-*/
+Datetime& Datetime::operator=(unsigned long current_timestamp)
 {
-	_start_of_day = millis();
+	if(Time(current_timestamp - _start_of_day) != *this)
+	{
+		(*this)++;  // or set time?
+	}
+	return (*this);
 }
 
 
@@ -71,7 +72,7 @@ NOTES: Ignores the 400 year rule for leap years.
 */
 {
 	Time::operator++();
-	if(Time::operator==(0))
+	if(_start_of_day >= 86400)
 	{
 		Date::operator++();
 		_start_of_day = millis();
