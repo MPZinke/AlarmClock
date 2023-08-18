@@ -19,13 +19,13 @@ Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/*
 }
 
 
-void set_time(uint8_t hour, uint8_t minute, uint8_t second/* =0 */)
+void Datetime::set_time(uint8_t hour, uint8_t minute, uint8_t second/* =0 */)
 {
 	_start_of_day = millis() - (hour * 3600) - (minute * 60) - second;
 }
 
 
-void set_hour(uint8_t hour)
+void Datetime::set_hour(uint8_t hour)
 /*
 NOTES: Zeroes seconds.
 */
@@ -38,7 +38,7 @@ NOTES: Zeroes seconds.
 }
 
 
-void set_minute(uint8_t minute)
+void Datetime::set_minute(uint8_t minute)
 /*
 NOTES: Zeroes seconds.
 */
@@ -70,23 +70,11 @@ void Datetime::operator++()
 NOTES: Ignores the 400 year rule for leap years.
 */
 {
-	_start_of_day = millis();
-	_day++;
-
-	if(_day > 31
-	// OR (Month is FEBRUARY, APRIL, JUNE, SEPTEMBER, NOVEMBER AND ...)
-	|| ((_month == APRIL || _month == JUNE || _month == SEPTEMBER || _month == NOVEMBER) && _day > 30)
-	// OR (Month is FEBRUARY AND (past the 29th OR not a leap year and past the 28th))
-	|| (_month == FEBRUARY && (_day > 29 || (_day > 28 && _year & 0b11 != 0)))
-	)
+	Time::operator++();
+	if(Time::operator==(0))
 	{
-		_day = 1;
-		_month++;
-		if(_month >= 13)
-		{
-			_month = 1;
-			_year++;
-		}
+		Date::operator++();
+		_start_of_day = millis();
 	}
 }
 

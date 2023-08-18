@@ -4,6 +4,7 @@
 
 
 #include "../Headers/Datetime.hpp"
+#include "../Headers/Display.hpp"
 
 
 namespace Global

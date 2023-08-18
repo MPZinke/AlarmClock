@@ -1,11 +1,14 @@
 
 
+#pragma once
+
+
 #include <stdint.h>
 
 
 class Date
 {
-	private:
+	protected:
 		uint8_t _year;
 		uint8_t _month;
 		uint8_t _day;

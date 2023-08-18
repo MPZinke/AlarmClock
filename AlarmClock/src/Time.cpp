@@ -31,6 +31,28 @@ Time::operator unsigned long() const
 }
 
 
+void Time::operator++()
+{
+	_second++;
+	if(_second >= 60)
+	{
+		_second = 0;
+		_minute++;
+		if(_minute >= 60)
+		{
+			_minute = 0;
+			_hour++;
+			{
+				if(_hour >= 24)
+				{
+					_hour = 0;
+				}
+			}
+		}
+	}
+}
+
+
 Time Time::operator+(unsigned long duration_seconds)
 {
 	return Time((unsigned long)(*this) + duration_seconds);
@@ -45,7 +67,19 @@ Time& Time::operator+=(unsigned long duration_seconds)
 	_minute = (time_seconds - hour_seconds) / 60;
 	_second = time_seconds - hour_seconds - (_minute * 60);
 
-	return (*this)
+	return (*this);
+}
+
+
+bool operator==(unsigned long duration_seconds, Time& right)
+{
+	return right._hour * 3600 + right._minute * 60 + right._second == duration_seconds;
+}
+
+
+bool Time::operator==(unsigned long duration_seconds)
+{
+	return _hour * 3600 + _minute * 60 + _second == duration_seconds;
 }
 
 

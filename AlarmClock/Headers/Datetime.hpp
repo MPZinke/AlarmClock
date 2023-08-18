@@ -1,5 +1,8 @@
 
 
+#pragma once
+
+
 #include "Date.hpp"
 #include "Time.hpp"
 
@@ -18,7 +21,7 @@ class Datetime: public Date, public Time
 	public:
 		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
 
-		void set_time(uint8_t hour, uint8_t minute);
+		void set_time(uint8_t hour, uint8_t minute, uint8_t second=0);
 		void set_hour(uint8_t hour);
 		void set_minute(uint8_t minute);
 

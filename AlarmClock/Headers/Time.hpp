@@ -1,5 +1,8 @@
 
 
+#pragma once
+
+
 #include <stdint.h>
 
 
@@ -17,10 +20,14 @@ class Time
 		// ———— OPERATORS ———— //
 		operator unsigned long() const;
 
+		void operator++();
+
 		Time operator+(unsigned long duration_seconds);
 		Time& operator+=(unsigned long duration_seconds);
 
+		bool operator==(unsigned long duration_seconds);
 		bool operator==(Time& right);
+		friend bool operator==(unsigned long duration_seconds, Time& right);
 		bool operator>(Time& right);
 		bool operator>=(Time& right);
 		bool operator<(Time& right);
