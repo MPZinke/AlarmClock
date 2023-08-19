@@ -6,8 +6,11 @@
 #include "Arduino.h"
 
 
+#include "../Headers/Alarm.hpp"
+
+
 Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
-: Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis() / 1000}
+: Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis()}
 {
 	// assert(2000 < _year && _year < 2400);  // Since I didn't code the 400 year rule for leap years
 	assert(0 < _month && _month < 13);
@@ -50,19 +53,30 @@ NOTES: Zeroes seconds.
 }
 
 
-Datetime::operator Time()
+Datetime::operator Time() const
 {
 	return Time((millis() / 1000) - _start_of_day);
 }
 
 
+Datetime::operator Time&()
+{
+	return *this;
+}
+
+
 Datetime& Datetime::operator=(unsigned long current_timestamp)
 {
-	if(Time(current_timestamp - _start_of_day) != *this)
+	unsigned long current_time = current_timestamp - _start_of_day;
+	if(current_time >= 86400000)
 	{
-		(*this)++;  // or set time?
+		Date::operator++();
+		_start_of_day += 86400000;
+		current_time = current_timestamp - _start_of_day;
 	}
-	return (*this);
+
+	Time::operator=(current_time);
+	return *this;
 }
 
 
@@ -71,19 +85,23 @@ void Datetime::operator++()
 NOTES: Ignores the 400 year rule for leap years.
 */
 {
-	Time::operator++();
-	if(_start_of_day >= 86400)
+	unsigned long current_timestamp = millis();
+	unsigned long current_time = current_timestamp - _start_of_day;
+	if(current_time >= 86400000)
 	{
 		Date::operator++();
-		_start_of_day = millis();
+		_start_of_day += 86400000;
+		current_time = current_timestamp - _start_of_day;
 	}
+
+	Time::operator=(current_time);
 }
 
 
 bool operator==(Alarm& alarm, Datetime& datetime)
 {
 
-	return alarm == (Time)datetime && alarm._dismissed == false;
+	return alarm == (Time)datetime/* && alarm._dismissed == false*/;
 }
 
 

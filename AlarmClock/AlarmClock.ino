@@ -2,6 +2,7 @@
 
 #include "Headers/Global.hpp"
 #include "Headers/Datetime.hpp"
+#include "Headers/Display.hpp"
 
 
 void display_time();
@@ -21,6 +22,8 @@ void setup()
 
 void loop()
 {
+	Global::datetime = millis();
+
 	// I have elected to this switch-case as opposed to a function array to make the code safer
 	switch(Global::state)
 	{
@@ -61,14 +64,40 @@ void loop()
 // Display time
 void display_time()
 {
-	// If minute has incremented
-	// if(Global::datetime)
+	Time& current_time = (Time&)Global::datetime;
+	if(current_time == (Time&)Global::display)
 	{
-		// Update screen thread
+		return;
 	}
+
+	Global::display = current_time;
 
 	// If alarm time
 	//	Set alarm state
 	// If user input for menu
 	//	Set state to menu
 }
+
+
+void set_time_hour()
+{}
+
+
+void set_time_minute()
+{}
+
+
+void set_alarm_hour()
+{}
+
+
+void set_alarm_minute()
+{}
+
+
+void play_alarm()
+{}
+
+
+void stop_alarm()
+{}

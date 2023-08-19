@@ -31,6 +31,25 @@ Time::operator unsigned long() const
 }
 
 
+Time& Time::operator=(unsigned long duration_seconds)
+{
+	_hour = duration_seconds / 3600;
+	unsigned long hour_seconds = _hour * 3600;
+	_minute = (duration_seconds - hour_seconds) / 60;
+	_second = duration_seconds - hour_seconds - (_minute * 60);
+
+	return *this;
+}
+
+
+Time& Time::operator=(Time& right)
+{
+	_hour = right._hour;
+	_minute = right._minute;
+	_second = right._second;
+}
+
+
 void Time::operator++()
 {
 	_second++;
@@ -53,7 +72,7 @@ void Time::operator++()
 }
 
 
-Time Time::operator+(unsigned long duration_seconds)
+Time Time::operator+(unsigned long duration_seconds) const
 {
 	return Time((unsigned long)(*this) + duration_seconds);
 }
@@ -67,7 +86,7 @@ Time& Time::operator+=(unsigned long duration_seconds)
 	_minute = (time_seconds - hour_seconds) / 60;
 	_second = time_seconds - hour_seconds - (_minute * 60);
 
-	return (*this);
+	return *this;
 }
 
 
@@ -77,19 +96,19 @@ bool operator==(unsigned long duration_seconds, Time& right)
 }
 
 
-bool Time::operator==(unsigned long duration_seconds)
+bool Time::operator==(unsigned long duration_seconds) const
 {
 	return _hour * 3600 + _minute * 60 + _second == duration_seconds;
 }
 
 
-bool Time::operator==(Time& right)
+bool Time::operator==(Time& right) const
 {
 	return _hour == right._hour && _minute == right._minute && _second == right._second;
 }
 
 
-bool Time::operator>(Time& right)
+bool Time::operator>(Time& right) const
 {
 	if(_hour > right._hour)
 	{
@@ -113,7 +132,7 @@ bool Time::operator>(Time& right)
 }
 
 
-bool Time::operator>=(Time& right)
+bool Time::operator>=(Time& right) const
 {
 	if(_hour > right._hour)
 	{
@@ -137,7 +156,7 @@ bool Time::operator>=(Time& right)
 }
 
 
-bool Time::operator<(Time& right)
+bool Time::operator<(Time& right) const
 {
 	if(_hour < right._hour)
 	{
@@ -161,7 +180,7 @@ bool Time::operator<(Time& right)
 }
 
 
-bool Time::operator<=(Time& right)
+bool Time::operator<=(Time& right) const
 {
 	if(_hour < right._hour)
 	{

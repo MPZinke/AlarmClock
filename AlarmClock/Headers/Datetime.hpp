@@ -16,7 +16,7 @@ class Alarm;
 class Datetime: public Date, public Time
 {
 	private:
-		unsigned long _start_of_day;  // Seconds
+		unsigned long _start_of_day;  // Milliseconds
 
 	public:
 		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
@@ -25,8 +25,9 @@ class Datetime: public Date, public Time
 		void set_hour(uint8_t hour);
 		void set_minute(uint8_t minute);
 
-		operator Date();
-		operator Time();
+		operator Date() const;
+		operator Time() const;
+		operator Time&();
 		Datetime& operator=(unsigned long timestamp);
 		void operator++();
 

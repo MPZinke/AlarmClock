@@ -18,6 +18,6 @@ namespace Global
 	};
 
 	extern State state;
-	extern Datetime datetime;
-	extern Display display;
+	extern ::Datetime datetime;
+	extern ::Display display;
 }

@@ -12,6 +12,10 @@ class Display
 	public:
 		Display();
 
+		operator Time&();
+
+		void operator=(Time& right);
+
 	private:
 		Date _date;
 		Time _time;	
