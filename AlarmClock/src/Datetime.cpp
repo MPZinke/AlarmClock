@@ -75,7 +75,7 @@ Datetime& Datetime::operator=(unsigned long current_timestamp)
 		current_time = current_timestamp - _start_of_day;
 	}
 
-	Time::operator=(current_time);
+	Time::operator=(current_time / 1000);
 	return *this;
 }
 
@@ -94,7 +94,7 @@ NOTES: Ignores the 400 year rule for leap years.
 		current_time = current_timestamp - _start_of_day;
 	}
 
-	Time::operator=(current_time);
+	Time::operator=(current_time / 1000);
 }
 
 

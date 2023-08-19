@@ -11,16 +11,28 @@ Time::Time(unsigned long duration_seconds)
 	_second = duration_seconds - hour_seconds - (_minute * 60);
 }
 
-
-// Time::Time()
-// : _hour{0}, _minute{0}, _second{0}
-// {}
-
-
 Time::Time(uint8_t hour/* =0 */, uint8_t minute/* =0 */, uint8_t second/* =0 */)
 // Time::Time(uint8_t hour=0, uint8_t minute=0, uint8_t second=0)
 : _hour{hour}, _minute{minute}, _second{second}
 {}
+
+
+uint8_t Time::hour() const
+{
+	return _hour;
+}
+
+
+uint8_t Time::minute() const
+{
+	return _minute;
+}
+
+
+uint8_t Time::second() const
+{
+	return _second;
+}
 
 
 // ———————————————————————————————————————————————————— OPERATOR ———————————————————————————————————————————————————— //

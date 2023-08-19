@@ -1,6 +1,11 @@
 
 
+#include "pico/multicore.h"
+
+
 #include "Headers/Global.hpp"
+
+#include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
 #include "Headers/Display.hpp"
 
@@ -64,14 +69,14 @@ void loop()
 // Display time
 void display_time()
 {
-	Time& current_time = (Time&)Global::datetime;
-	if(current_time == (Time&)Global::display)
+	Time& display_time = (Time&)Global::display;
+	if(display_time.hour() == Global::datetime.hour() && display_time.minute() == Global::datetime.minute())
 	{
 		return;
 	}
 
-	Global::display = current_time;
-
+	Global::display = (Time&)Global::datetime;
+	multicore_launch_core1(Core1::update_display);
 	// If alarm time
 	//	Set alarm state
 	// If user input for menu

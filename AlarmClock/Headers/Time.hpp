@@ -6,6 +6,9 @@
 #include <stdint.h>
 
 
+class Display;
+
+
 class Time
 {
 	public:
