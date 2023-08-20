@@ -1,22 +1,12 @@
 
 
-#include "pico/multicore.h"
-
-
 #include "Headers/Global.hpp"
+
 
 #include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
 #include "Headers/Display.hpp"
-
-
-void display_time();
-void set_time_hour();
-void set_time_minute();
-void set_alarm_hour();
-void set_alarm_minute();
-void play_alarm();
-void stop_alarm();
+#include "Headers/States.hpp"
 
 
 void setup()
@@ -34,75 +24,33 @@ void loop()
 	{
 		case Global::DISPLAY_TIME:
 		{
-			display_time();
+			States::display_time();
 		}
 		case Global::SET_TIME_HOUR:
 		{
-			set_time_hour();
+			States::set_time_hour();
 		}
 		case Global::SET_TIME_MINUTE:
 		{
-			set_time_minute();
+			States::set_time_minute();
 		}
 		case Global::SET_ALARM_HOUR:
 		{
-			set_alarm_hour();
+			States::set_alarm_hour();
 		}
 		case Global::SET_ALARM_MINUTE:
 		{
-			set_alarm_minute();
+			States::set_alarm_minute();
 		}
 		case Global::PLAY_ALARM:
 		{
-			play_alarm();
+			States::play_alarm();
 		}
 		case Global::STOP_ALARM:
 		{
-			stop_alarm();
+			States::stop_alarm();
 		}
 	}
 
 	delay(100);
 }
-
-
-// Display time
-void display_time()
-{
-	Time& display_time = (Time&)Global::display;
-	if(display_time.hour() == Global::datetime.hour() && display_time.minute() == Global::datetime.minute())
-	{
-		return;
-	}
-
-	Global::display = (Time&)Global::datetime;
-	multicore_launch_core1(Core1::update_display);
-	// If alarm time
-	//	Set alarm state
-	// If user input for menu
-	//	Set state to menu
-}
-
-
-void set_time_hour()
-{}
-
-
-void set_time_minute()
-{}
-
-
-void set_alarm_hour()
-{}
-
-
-void set_alarm_minute()
-{}
-
-
-void play_alarm()
-{}
-
-
-void stop_alarm()
-{}

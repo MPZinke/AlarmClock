@@ -21,16 +21,19 @@ class Datetime: public Date, public Time
 	public:
 		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
 
-		void set_time(uint8_t hour, uint8_t minute, uint8_t second=0);
-		void set_hour(uint8_t hour);
-		void set_minute(uint8_t minute);
+		uint8_t hour() const;
+		uint8_t minute() const;
+		uint8_t second() const;
 
-		operator Date() const;
-		operator Time() const;
+		void time(uint8_t hour, uint8_t minute, uint8_t second=0);
+		void hour(uint8_t new_hour);
+		void minute(uint8_t new_minute);
+		void second(uint8_t new_second);
+
 		operator Time&();
 		Datetime& operator=(unsigned long timestamp);
 		void operator++();
 
-		friend bool operator==(Alarm& alarm, Datetime& datetime);
-		friend bool operator==(Datetime& datetime, Alarm& alarm);
+		// friend bool operator==(Alarm& alarm, Datetime& datetime);
+		// friend bool operator==(Datetime& datetime, Alarm& alarm);
 };

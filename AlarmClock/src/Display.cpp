@@ -12,6 +12,12 @@ Display::Display()
 {}
 
 
+Display::operator Date&()
+{
+	return _date;
+}
+
+
 Display::operator Time&()
 {
 	return _time;

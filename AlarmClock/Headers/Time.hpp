@@ -19,6 +19,10 @@ class Time
 		uint8_t minute() const;
 		uint8_t second() const;
 
+		void hour(uint8_t hour);
+		void minute(uint8_t minute);
+		void second(uint8_t second);
+
 		// ———— OPERATORS ———— //
 		operator unsigned long() const;
 
@@ -37,7 +41,7 @@ class Time
 		bool operator<(Time& right) const;
 		bool operator<=(Time& right) const;
 
-	private:
+	protected:
 		uint8_t _hour;
 		uint8_t _minute;
 		uint8_t _second;

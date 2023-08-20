@@ -1,5 +1,6 @@
 
 
+class Alarm;
 class Datetime;
 class Display;
 
@@ -17,7 +18,8 @@ namespace Global
 		STOP_ALARM
 	};
 
+	extern Alarm alarm;
 	extern State state;
-	extern ::Datetime datetime;
-	extern ::Display display;
+	extern Datetime datetime;
+	extern Display display;
 }

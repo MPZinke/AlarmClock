@@ -32,5 +32,14 @@ class Date
 
 		Date(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
 
+		uint8_t year();
+		uint8_t month();
+		uint8_t day();
+
+		void year(uint8_t year);
+		void month(uint8_t month);
+		void day(uint8_t day);
+
 		void operator++();
+		bool operator==(Date& right);
 };

@@ -14,11 +14,6 @@ class Alarm
 
 	public:
 		Alarm(uint8_t hour, uint8_t minute);
-
-		operator unsigned long();
-
-		friend bool operator==(Alarm& alarm, Datetime& datetime);
-		friend bool operator==(Datetime& datetime, Alarm& alarm);
 };
 
 
@@ -35,6 +30,8 @@ class AlarmInstance: Alarm
 		void update(unsigned long timestamp);
 		void update(Datetime& datetime);
 		void update(uint8_t hour, uint8_t minute);
+
+		operator unsigned long();
 
 		friend bool operator==(AlarmInstance& alarm_instance, Datetime& datetime);
 		friend bool operator==(Datetime& datetime, AlarmInstance& alarm_instance);

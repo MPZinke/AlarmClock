@@ -35,6 +35,24 @@ uint8_t Time::second() const
 }
 
 
+void Time::hour(uint8_t hour)
+{
+	_hour = hour;
+}
+
+
+void Time::minute(uint8_t minute)
+{
+	_minute = minute;
+}
+
+
+void Time::second(uint8_t second)
+{
+	_second = second;
+}
+
+
 // ———————————————————————————————————————————————————— OPERATOR ———————————————————————————————————————————————————— //
 
 Time::operator unsigned long() const

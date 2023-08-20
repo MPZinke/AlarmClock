@@ -7,6 +7,43 @@ Date::Date(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : _year{year}, _month{month}, _day{day}
 {}
 
+uint8_t Date::year()
+{
+	return _year;
+}
+
+
+uint8_t Date::month()
+{
+	return _month;
+}
+
+
+uint8_t Date::day()
+{
+	return _day;
+}
+
+
+void Date::year(uint8_t year)
+{
+	_year = year;
+}
+
+
+void Date::month(uint8_t month)
+{
+	_month = month;
+}
+
+
+void Date::day(uint8_t day)
+{
+	_day = day;
+}
+
+
+// ———————————————————————————————————————————————————— OPERATOR ———————————————————————————————————————————————————— //
 
 void Date::operator++()
 /*
@@ -30,4 +67,10 @@ NOTES: Ignores the 400 year rule for leap years.
 			_year++;
 		}
 	}
+}
+
+
+bool Date::operator==(Date& right)
+{
+	return _year == right._year && _month == right._month && _day == right._day;
 }

@@ -22,40 +22,69 @@ Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/*
 }
 
 
-void Datetime::set_time(uint8_t hour, uint8_t minute, uint8_t second/* =0 */)
+uint8_t Datetime::hour() const
 {
-	_start_of_day = millis() - (hour * 3600) - (minute * 60) - second;
+	return _hour;
 }
 
 
-void Datetime::set_hour(uint8_t hour)
+uint8_t Datetime::minute() const
+{
+	return _minute;
+}
+
+
+uint8_t Datetime::second() const
+{
+	return _second;
+}
+
+
+void Datetime::time(uint8_t hour, uint8_t minute, uint8_t second/* =0 */)
+{
+	_start_of_day = millis() - (hour * 3600000) - (minute * 60000) - (second * 1000);
+}
+
+
+void Datetime::hour(uint8_t hour)
 /*
 NOTES: Zeroes seconds.
 */
 {
-	unsigned long current_timestamp = millis() / 1000;
+	unsigned long current_timestamp = millis();
 	unsigned long time_delta = current_timestamp - _start_of_day;
 	// Start of Day = Current Timestamp in seconds - New Hour in seconds - Prior Minute in seconds
 	// Can also use `_start_of_day = current_timestamp - (hour * 3600000) - (time_delta % 3600000) / 60000;`
-	_start_of_day = current_timestamp - (hour * 3600) - (time_delta - ((time_delta / 3600) * 3600)) / 60;
+	_start_of_day = current_timestamp - (hour * 3600000) - (time_delta - ((time_delta / 3600000) * 3600000)) / 60000;
+
+	_hour = hour;
 }
 
 
-void Datetime::set_minute(uint8_t minute)
+void Datetime::minute(uint8_t minute)
 /*
 NOTES: Zeroes seconds.
 */
 {
-	unsigned long current_timestamp = millis() / 1000;
+	unsigned long current_timestamp = millis();
 	unsigned long time_delta = current_timestamp - _start_of_day;
 	// Start of Day = Current Timestamp in seconds - Prior Hour in seconds - Prior Minute in seconds
-	_start_of_day = current_timestamp - ((time_delta / 3600) * 3600) - (minute * 60);
+	_start_of_day = current_timestamp - ((time_delta / 3600000) * 3600000) - (minute * 60000);
+
+	_minute = minute;
 }
 
 
-Datetime::operator Time() const
+void Datetime::second(uint8_t second)
 {
-	return Time((millis() / 1000) - _start_of_day);
+	unsigned long current_timestamp = millis();
+	unsigned long time_delta = current_timestamp - _start_of_day;
+	unsigned long prior_hour_milliseconds = (time_delta / 3600000) * 3600000;
+	unsigned long prior_minute_milliseconds = ((time_delta - prior_hour_milliseconds) / 60000) * 60000;
+	// Start of Day = Current Timestamp in seconds - Prior Hour in seconds - Prior Minute in seconds
+	_start_of_day = current_timestamp - prior_hour_milliseconds - prior_minute_milliseconds - (second * 1000);
+
+	_second = second;
 }
 
 
@@ -98,14 +127,14 @@ NOTES: Ignores the 400 year rule for leap years.
 }
 
 
-bool operator==(Alarm& alarm, Datetime& datetime)
-{
+// bool operator==(Alarm& alarm, Datetime& datetime)
+// {
 
-	return alarm == (Time)datetime/* && alarm._dismissed == false*/;
-}
+// 	return alarm == (Time)datetime/* && alarm._dismissed == false*/;
+// }
 
 
-bool operator==(Datetime& datetime, Alarm& alarm)
-{
-	return alarm == datetime;
-}
+// bool operator==(Datetime& datetime, Alarm& alarm)
+// {
+// 	return alarm == datetime;
+// }
