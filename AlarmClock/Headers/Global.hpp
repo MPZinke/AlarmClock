@@ -1,5 +1,11 @@
 
 
+#include "DFRobotDFPlayerMini.h"
+
+
+#include "States.hpp"
+
+
 class Alarm;
 class Datetime;
 class Display;
@@ -7,19 +13,11 @@ class Display;
 
 namespace Global
 {
-	enum State
-	{
-		DISPLAY_TIME,
-		SET_TIME_HOUR,
-		SET_TIME_MINUTE,
-		SET_ALARM_HOUR,
-		SET_ALARM_MINUTE,
-		PLAY_ALARM,
-		STOP_ALARM
-	};
-
 	extern Alarm alarm;
-	extern State state;
+	extern States::State state;
 	extern Datetime datetime;
 	extern Display display;
+
+	// Audio
+	extern DFRobotDFPlayerMini player;
 }

@@ -28,6 +28,14 @@ Python Alarm Clock to run on Raspberry Pico with eInk display.
 	- Packaging
 
 
+## Libraries
+- DFRobotDFPlayerMini
+
+
+## Board
+- Arduino Mbed OS RP2040 Boards > Raspberry Pi Pico
+
+
 ## Hardware
 - RPi Pico
 - [Adafruit 1.54" Monochrome eInk / ePaper Display with SRAM](https://www.adafruit.com/product/4196)

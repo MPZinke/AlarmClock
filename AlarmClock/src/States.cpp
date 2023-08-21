@@ -58,7 +58,11 @@ namespace States
 
 
 	void play_alarm()
-	{}
+	{
+		// Check button press
+		// If button pressed
+			// Stop
+	}
 
 
 	void stop_alarm()

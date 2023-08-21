@@ -9,7 +9,9 @@
 
 namespace Global
 {
-	State state = DISPLAY_TIME;
+	States::State state = States::DISPLAY_TIME;
 	Datetime datetime(2023, 8, 17);
 	Display display;
+
+	DFRobotDFPlayerMini player;
 }
