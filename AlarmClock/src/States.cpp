@@ -59,6 +59,9 @@ namespace States
 
 	void play_alarm()
 	{
+		Global::Audio::player.play(1);
+
+		Global::state = DISPLAY_TIME;
 		// Check button press
 		// If button pressed
 			// Stop

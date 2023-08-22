@@ -13,14 +13,16 @@
 void setup()
 {
 	// Audio setup
+	Global::Audio::serial.begin(9600);
 	Serial1.begin(9600);
-	if(!Global::player.begin(Serial1, /*isACK = */true, /*doReset = */true))
+	if(!Global::Audio::player.begin(Global::Audio::serial, true, true))
 	{
 		while(1)
 		{}
 	}
-	Global::player.volume(10);
-	Global::player.play(Audio::Tracks::START_UP);
+	Global::Audio::player.volume(10);
+
+	Global::state = States::PLAY_ALARM;
 }
 
 

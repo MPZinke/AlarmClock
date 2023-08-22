@@ -69,7 +69,7 @@ NOTES: Zeroes seconds.
 	unsigned long current_timestamp = millis();
 	unsigned long time_delta = current_timestamp - _start_of_day;
 	// Start of Day = Current Timestamp in seconds - Prior Hour in seconds - Prior Minute in seconds
-	_start_of_day = current_timestamp - ((time_delta / 3600000) * 3600000) - (minute * 60000);
+	_start_of_day = current_timestamp - ((time_delta / 3600000ul) * 3600000ul) - (minute * 60000ul);
 
 	_minute = minute;
 }
@@ -79,10 +79,10 @@ void Datetime::second(uint8_t second)
 {
 	unsigned long current_timestamp = millis();
 	unsigned long time_delta = current_timestamp - _start_of_day;
-	unsigned long prior_hour_milliseconds = (time_delta / 3600000) * 3600000;
-	unsigned long prior_minute_milliseconds = ((time_delta - prior_hour_milliseconds) / 60000) * 60000;
+	unsigned long prior_hour_milliseconds = (time_delta / 3600000ul) * 3600000ul;
+	unsigned long prior_minute_milliseconds = ((time_delta - prior_hour_milliseconds) / 60000ul) * 60000ul;
 	// Start of Day = Current Timestamp in seconds - Prior Hour in seconds - Prior Minute in seconds
-	_start_of_day = current_timestamp - prior_hour_milliseconds - prior_minute_milliseconds - (second * 1000);
+	_start_of_day = current_timestamp - prior_hour_milliseconds - prior_minute_milliseconds - (second * 1000ul);
 
 	_second = second;
 }
@@ -97,14 +97,14 @@ Datetime::operator Time&()
 Datetime& Datetime::operator=(unsigned long current_timestamp)
 {
 	unsigned long current_time = current_timestamp - _start_of_day;
-	if(current_time >= 86400000)
+	if(current_time >= 86400000ul)
 	{
 		Date::operator++();
-		_start_of_day += 86400000;
+		_start_of_day += 86400000ul;
 		current_time = current_timestamp - _start_of_day;
 	}
 
-	Time::operator=(current_time / 1000);
+	Time::operator=(current_time / 1000ul);
 	return *this;
 }
 
@@ -116,14 +116,14 @@ NOTES: Ignores the 400 year rule for leap years.
 {
 	unsigned long current_timestamp = millis();
 	unsigned long current_time = current_timestamp - _start_of_day;
-	if(current_time >= 86400000)
+	if(current_time >= 86400000ul)
 	{
 		Date::operator++();
-		_start_of_day += 86400000;
+		_start_of_day += 86400000ul;
 		current_time = current_timestamp - _start_of_day;
 	}
 
-	Time::operator=(current_time / 1000);
+	Time::operator=(current_time / 1000ul);
 }
 
 

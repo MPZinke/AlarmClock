@@ -17,7 +17,11 @@ namespace Global
 	extern States::State state;
 	extern Datetime datetime;
 	extern Display display;
+	extern UART Serial2;
 
-	// Audio
-	extern DFRobotDFPlayerMini player;
+	namespace Audio
+	{
+		extern DFRobotDFPlayerMini player;
+		extern UART& serial;
+	}
 }
