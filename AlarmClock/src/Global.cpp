@@ -17,6 +17,6 @@ namespace Global
 	namespace Audio
 	{
 		UART& serial = Serial2;
-		DFRobotDFPlayerMini player;
+		DFPlayer player(serial);
 	}
 }

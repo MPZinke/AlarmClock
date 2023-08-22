@@ -15,12 +15,8 @@ void setup()
 	// Audio setup
 	Global::Audio::serial.begin(9600);
 	Serial1.begin(9600);
-	if(!Global::Audio::player.begin(Global::Audio::serial, true, true))
-	{
-		while(1)
-		{}
-	}
-	Global::Audio::player.volume(10);
+	Global::Audio::player.begin();
+	Global::Audio::player.setVolume(10);
 
 	Global::state = States::PLAY_ALARM;
 }
