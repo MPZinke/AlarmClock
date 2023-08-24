@@ -3,6 +3,9 @@
 #include "../Headers/Alarm.hpp"
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 Alarm::Alarm(uint8_t hour, uint8_t minute)
 : _hour{hour}, _minute{minute}
 {}

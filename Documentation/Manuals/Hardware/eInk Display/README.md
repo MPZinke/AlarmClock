@@ -1,8 +1,51 @@
+
 # Wiring
+
+## Mapping
+| eInk Pin | Pico Pin Name  | Pico Pin Number       | What I Used |
+|----------|----------------|-----------------------|-------------|
+| Vin      | VBUS OR 3V3    | 40 OR 36              |             |
+| GND      | GND            | 3,8,13,18,23,28,33,38 |             |
+| CLK      | GP18-SPI0 SCK  | 24                    |             |
+| MOSI     | GP19-SPI0 TX   | 25                    |             |
+| MISO     | GP16-SPI0 RX   | 21                    |             |
+| ECS      | GP17-SPI0 CSn  | 22                    |             |
+| D/C      | GPXX           | *                     | GP04        |
+| SRCS     | GPXX           | *                     | GP05        |
+| SDCS     | -              | -                     | -           |
+| RST      | GPXX           | *                     | GP07        |
+| BUSY     | GPXX           | *                     | GP10        |
+| ENA      | -              | -                     | -           |
+
+
+## Notes
+### Pin Names
+**MISO = SPI_RXD**
+**MOSI = SPI_TXD**
+
+
+### Font Sizes
+| Size | Width  | Height |
+|------|--------|--------|
+|  3   |  17.5  |  23.5  |
+|  4   |  22.5  |   32   |
+|  5   |  27.5  |  37.5  |
+|  6   |   35   |  42.5  |
+|  7   |   40   |        |
+
+
+## Resources
+https://forum.arduino.cc/t/raspberry-pi-pico-ethernet-library-change-spi-pins/916155
+
+
+---
+
+## Adafruit
 https://learn.adafruit.com/adafruit-1-54-eink-display-breakouts/wiring
 
 ## Breakout Wiring
 Though it looks like a lot of connections, wiring up an eInk breakout is pretty straightforward! Below shows using hardware SPI to connect it to an Adafruit Metro M4.
+
 
 ### Arduino
 

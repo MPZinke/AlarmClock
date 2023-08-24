@@ -3,6 +3,9 @@
 #include "../Headers/Date.hpp"
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 Date::Date(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : _year{year}, _month{month}, _day{day}
 {}

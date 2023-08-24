@@ -3,6 +3,9 @@
 #pragma once
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 namespace States
 {
 	enum State

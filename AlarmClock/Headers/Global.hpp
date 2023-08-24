@@ -4,6 +4,9 @@
 #include "States.hpp"
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 class Alarm;
 class Datetime;
 class Display;
@@ -19,11 +22,10 @@ namespace Global
 	extern Datetime datetime;
 	extern Display display;
 	extern UART Serial2;
-	extern uint8_t volume;
 
 	namespace Audio
 	{
 		extern DFPlayer player;
-		extern UART& serial;
+		extern uint8_t volume;
 	}
 }

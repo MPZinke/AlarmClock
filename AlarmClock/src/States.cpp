@@ -15,6 +15,9 @@
 #include "../Headers/Time.hpp"
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 namespace States
 {
 	// Display time
@@ -29,7 +32,8 @@ namespace States
 		}
 
 		Global::display = (Time&)Global::datetime;
-		multicore_launch_core1(Core1::update_display);
+		Core1::update_display();
+		// multicore_launch_core1(Core1::update_display);
 		// If alarm time
 		//	Set alarm state
 		// If user input for menu

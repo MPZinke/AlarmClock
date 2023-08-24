@@ -1,5 +1,9 @@
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
+
 #include "Headers/Global.hpp"
 
 
@@ -10,28 +14,51 @@
 #include "Headers/States.hpp"
 
 
+unsigned long LAST_LIGHT_SWITCH;
+bool LIGHT_VALUE;
+
+
 void setup()
 {
+	Serial.begin(9600);
+	Serial.println("Start");
+	LAST_LIGHT_SWITCH = millis();
+	LIGHT_VALUE = false;
 	// Audio setup
-	Global::Audio::serial.begin(9600);
+	Global::Serial2.begin(9600);
 	Serial1.begin(9600);
 	Global::Audio::player.begin();
 	Global::Audio::player.setVolume(10);
 
-	Global::state = States::PLAY_ALARM;
+	// Display setup
+	Serial.println("Start");
+	Global::state = States::DISPLAY_TIME;
+	Serial.println("Start");
+	Global::display.begin();
 }
 
 
 void loop()
 {
-	Global::datetime = millis();
+	Serial.println("Loop");
+	// unsigned long current_timestamp = millis();
+	// if(LAST_LIGHT_SWITCH + 1000 > current_timestamp)
+	// {
+	// 	LAST_LIGHT_SWITCH = current_timestamp;
+	// 	LIGHT_VALUE = !LIGHT_VALUE;
+	// 	digitalWrite(LED_BUILTIN, LIGHT_VALUE);
+	// }
+
+	// Global::datetime = current_timestamp;
 
 	// I have elected to this switch-case as opposed to a function array to make the code safer
 	switch(Global::state)
 	{
 		case States::DISPLAY_TIME:
 		{
-			States::display_time();
+			Global::display.update();
+			Global::state = States::SET_ALARM_MINUTE;
+			// States::display_time();
 		}
 		case States::SET_TIME_HOUR:
 		{

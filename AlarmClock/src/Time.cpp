@@ -3,6 +3,9 @@
 #include "../Headers/Time.hpp"
 
 
+#define EPD_SPI &SPI0 // primary SPI
+
+
 Time::Time(unsigned long duration_seconds)
 {
 	_hour = duration_seconds / 3600;
