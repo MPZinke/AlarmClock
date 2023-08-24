@@ -1,10 +1,11 @@
 
 
+#include <Adafruit_ThinkInk.h>  // For MbedSPI
+
+
 #include "Audio.hpp"
 #include "States.hpp"
 
-
-#define EPD_SPI &SPI0 // primary SPI
 
 
 class Alarm;
@@ -21,11 +22,22 @@ namespace Global
 	extern States::State state;
 	extern Datetime datetime;
 	extern Display display;
-	extern UART Serial2;
 
 	namespace Audio
 	{
 		extern DFPlayer player;
 		extern uint8_t volume;
+	}
+
+	namespace BlinkingLight
+	{
+		extern unsigned long last_switch;
+		extern bool state;
+	}
+
+	namespace Hardware
+	{
+		extern MbedSPI SPI1;
+		extern UART Serial2;
 	}
 }

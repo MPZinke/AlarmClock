@@ -3,8 +3,6 @@
 #pragma once
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 #include <stdint.h>
 
@@ -42,6 +40,8 @@ class Date
 		void year(uint8_t year);
 		void month(uint8_t month);
 		void day(uint8_t day);
+
+		Date& operator=(Date& right);
 
 		void operator++();
 		bool operator==(Date& right);

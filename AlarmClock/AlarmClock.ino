@@ -1,7 +1,5 @@
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 
 #include "Headers/Global.hpp"
@@ -14,75 +12,72 @@
 #include "Headers/States.hpp"
 
 
-unsigned long LAST_LIGHT_SWITCH;
-bool LIGHT_VALUE;
-
-
 void setup()
 {
-	Serial.begin(9600);
-	Serial.println("Start");
-	LAST_LIGHT_SWITCH = millis();
-	LIGHT_VALUE = false;
+	// Serial.begin(115200);
+	Global::BlinkingLight::last_switch = millis();
+	Global::BlinkingLight::state = false;
 	// Audio setup
-	Global::Serial2.begin(9600);
-	Serial1.begin(9600);
+	Global::Hardware::Serial2.begin(9600);
 	Global::Audio::player.begin();
-	Global::Audio::player.setVolume(10);
+	Global::Audio::player.setVolume(Global::Audio::volume);
 
 	// Display setup
-	Serial.println("Start");
+	// Global::Hardware::SPI1.begin();
 	Global::state = States::DISPLAY_TIME;
-	Serial.println("Start");
 	Global::display.begin();
 }
 
 
 void loop()
 {
-	Serial.println("Loop");
-	// unsigned long current_timestamp = millis();
-	// if(LAST_LIGHT_SWITCH + 1000 > current_timestamp)
-	// {
-	// 	LAST_LIGHT_SWITCH = current_timestamp;
-	// 	LIGHT_VALUE = !LIGHT_VALUE;
-	// 	digitalWrite(LED_BUILTIN, LIGHT_VALUE);
-	// }
+	unsigned long current_timestamp = millis();
+	if(Global::BlinkingLight::last_switch + 1000 < current_timestamp)
+	{
+		Global::BlinkingLight::last_switch = current_timestamp;
+		Global::BlinkingLight::state = !Global::BlinkingLight::state;
+		digitalWrite(LED_BUILTIN, Global::BlinkingLight::state ? HIGH : LOW);
+	}
 
-	// Global::datetime = current_timestamp;
+	Global::datetime = current_timestamp;
 
 	// I have elected to this switch-case as opposed to a function array to make the code safer
 	switch(Global::state)
 	{
 		case States::DISPLAY_TIME:
 		{
-			Global::display.update();
-			Global::state = States::SET_ALARM_MINUTE;
-			// States::display_time();
+			States::display_time();
+			break;
 		}
 		case States::SET_TIME_HOUR:
 		{
 			States::set_time_hour();
+			break;
 		}
 		case States::SET_TIME_MINUTE:
 		{
 			States::set_time_minute();
+			break;
 		}
 		case States::SET_ALARM_HOUR:
 		{
 			States::set_alarm_hour();
+			break;
 		}
 		case States::SET_ALARM_MINUTE:
 		{
 			States::set_alarm_minute();
+			break;
 		}
 		case States::PLAY_ALARM:
 		{
 			States::play_alarm();
+			break;
 		}
 		case States::STOP_ALARM:
 		{
 			States::stop_alarm();
+			break;
 		}
 	}
 

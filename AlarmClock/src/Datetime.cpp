@@ -9,8 +9,6 @@
 #include "../Headers/Alarm.hpp"
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis()}

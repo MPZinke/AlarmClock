@@ -15,8 +15,6 @@
 #include "../Headers/Time.hpp"
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 namespace States
 {
@@ -31,6 +29,7 @@ namespace States
 			return;
 		}
 
+		Global::display = (Date&)Global::datetime;
 		Global::display = (Time&)Global::datetime;
 		Core1::update_display();
 		// multicore_launch_core1(Core1::update_display);
@@ -63,7 +62,7 @@ namespace States
 
 	void play_alarm()
 	{
-		Global::Audio::player.playFolderTrack(1, 1);
+		// Global::Audio::player.playFolderTrack(1, 1);
 
 		Global::state = STOP_ALARM;
 		// Check button press

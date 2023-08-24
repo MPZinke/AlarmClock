@@ -9,8 +9,6 @@
 #include "../Headers/Display.hpp"
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 namespace Core1
 {

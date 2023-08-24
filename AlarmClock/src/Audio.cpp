@@ -6,8 +6,6 @@
 #include "../Headers/Global.hpp"
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 namespace Audio
 {

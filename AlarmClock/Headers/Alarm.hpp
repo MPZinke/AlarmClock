@@ -3,8 +3,6 @@
 #pragma once
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 #include <stdint.h>
 

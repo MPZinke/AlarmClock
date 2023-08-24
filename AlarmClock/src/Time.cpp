@@ -3,8 +3,6 @@
 #include "../Headers/Time.hpp"
 
 
-#define EPD_SPI &SPI0 // primary SPI
-
 
 Time::Time(unsigned long duration_seconds)
 {
@@ -80,6 +78,8 @@ Time& Time::operator=(Time& right)
 	_hour = right._hour;
 	_minute = right._minute;
 	_second = right._second;
+
+	return *this;
 }
 
 

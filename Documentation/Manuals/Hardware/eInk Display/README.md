@@ -4,12 +4,12 @@
 ## Mapping
 | eInk Pin | Pico Pin Name  | Pico Pin Number       | What I Used |
 |----------|----------------|-----------------------|-------------|
-| Vin      | VBUS OR 3V3    | 40 OR 36              |             |
-| GND      | GND            | 3,8,13,18,23,28,33,38 |             |
-| CLK      | GP18-SPI0 SCK  | 24                    |             |
-| MOSI     | GP19-SPI0 TX   | 25                    |             |
-| MISO     | GP16-SPI0 RX   | 21                    |             |
-| ECS      | GP17-SPI0 CSn  | 22                    |             |
+| Vin      | VBUS OR 3V3    | 40 OR 36              | PIN38       |
+| GND      | GND            | 3,8,13,18,23,28,33,38 | PIN40       |
+| CLK      | GPXX-SPI0 SCK  | 4,9,14,19,24          | GP02        |
+| MOSI     | GPXX-SPI0 TX   | 5,10,15,20            | GP03        |
+| MISO     | GPXX-SPI0 RX   | 1,6,11,16,21          | GP00        |
+| ECS      | GPXX-SPI0 CSn  | 2,7,12,17,22          | GP01        |
 | D/C      | GPXX           | *                     | GP04        |
 | SRCS     | GPXX           | *                     | GP05        |
 | SDCS     | -              | -                     | -           |
@@ -35,6 +35,8 @@
 
 
 ## Resources
+[ThinkInk_154_Mono_D67](https://github.com/adafruit/Adafruit_EPD/blob/08571489fbaf89161bb3659531d63f6c58ea10d4/src/panels/ThinkInk_154_Mono_D67.h#L14)
+[MbedSPI](https://github.com/arduino/ArduinoCore-mbed/blob/52caeac0926acbfb9a3f2b0fa3ba1c9996f103ec/libraries/SPI/SPI.h#L31)
 https://forum.arduino.cc/t/raspberry-pi-pico-ethernet-library-change-spi-pins/916155
 
 
