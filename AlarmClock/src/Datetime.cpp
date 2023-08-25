@@ -1,5 +1,8 @@
 
 
+#pragma once
+
+
 #include "../Headers/Datetime.hpp"
 
 
@@ -126,16 +129,3 @@ NOTES: Ignores the 400 year rule for leap years.
 
 	Time::operator=(current_time / 1000ul);
 }
-
-
-// bool operator==(Alarm& alarm, Datetime& datetime)
-// {
-
-// 	return alarm == (Time)datetime/* && alarm._dismissed == false*/;
-// }
-
-
-// bool operator==(Datetime& datetime, Alarm& alarm)
-// {
-// 	return alarm == datetime;
-// }

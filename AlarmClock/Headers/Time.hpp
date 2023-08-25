@@ -3,10 +3,10 @@
 #pragma once
 
 
-
 #include <stdint.h>
 
 
+class Alarm;
 class Display;
 
 
@@ -34,13 +34,18 @@ class Time
 		Time operator+(unsigned long duration_seconds) const;
 		Time& operator+=(unsigned long duration_seconds);
 
-		bool operator==(unsigned long duration_seconds) const;
 		bool operator==(Time& right) const;
+
+		bool operator==(unsigned long duration_seconds) const;
 		friend bool operator==(unsigned long duration_seconds, Time& right);
+
 		bool operator>(Time& right) const;
 		bool operator>=(Time& right) const;
 		bool operator<(Time& right) const;
 		bool operator<=(Time& right) const;
+
+		friend bool operator==(Alarm& alarm, Time& time);
+		friend bool operator==(Time& time, Alarm& alarm);
 
 	protected:
 		uint8_t _hour;

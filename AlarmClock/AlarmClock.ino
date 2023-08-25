@@ -14,16 +14,15 @@
 
 void setup()
 {
-	// Serial.begin(115200);
-	Global::BlinkingLight::last_switch = millis();
-	Global::BlinkingLight::state = false;
+	Global::BlinkingLight::last_switch = millis();  // DEVELOPMENT
+	Global::BlinkingLight::state = false;  // DEVELOPMENT
+
 	// Audio setup
 	Global::Hardware::Serial2.begin(9600);
 	Global::Audio::player.begin();
 	Global::Audio::player.setVolume(Global::Audio::volume);
 
 	// Display setup
-	// Global::Hardware::SPI1.begin();
 	Global::state = States::DISPLAY_TIME;
 	Global::display.begin();
 }
@@ -32,14 +31,14 @@ void setup()
 void loop()
 {
 	unsigned long current_timestamp = millis();
-	if(Global::BlinkingLight::last_switch + 1000 < current_timestamp)
-	{
-		Global::BlinkingLight::last_switch = current_timestamp;
-		Global::BlinkingLight::state = !Global::BlinkingLight::state;
-		digitalWrite(LED_BUILTIN, Global::BlinkingLight::state ? HIGH : LOW);
-	}
+	if(Global::BlinkingLight::last_switch + 1000 < current_timestamp)  // DEVELOPMENT
+	{  // DEVELOPMENT
+		Global::BlinkingLight::last_switch += 1000;  // DEVELOPMENT
+		Global::BlinkingLight::state = !Global::BlinkingLight::state;  // DEVELOPMENT
+		digitalWrite(LED_BUILTIN, Global::BlinkingLight::state ? HIGH : LOW);  // DEVELOPMENT
+	}  // DEVELOPMENT
 
-	Global::datetime = current_timestamp;
+	Global::Time::datetime = current_timestamp;
 
 	// I have elected to this switch-case as opposed to a function array to make the code safer
 	switch(Global::state)
@@ -81,5 +80,5 @@ void loop()
 		}
 	}
 
-	delay(100);
+	delay(50);
 }

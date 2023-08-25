@@ -1,5 +1,8 @@
 
 
+#pragma once
+
+
 #include <Adafruit_ThinkInk.h>  // For MbedSPI
 
 
@@ -7,8 +10,7 @@
 #include "States.hpp"
 
 
-
-class Alarm;
+class AlarmSet;
 class Datetime;
 class Display;
 
@@ -18,10 +20,8 @@ class Display;
 
 namespace Global
 {
-	extern Alarm alarm;
-	extern States::State state;
-	extern Datetime datetime;
 	extern Display display;
+	extern States::State state;
 
 	namespace Audio
 	{
@@ -39,5 +39,11 @@ namespace Global
 	{
 		extern MbedSPI SPI1;
 		extern UART Serial2;
+	}
+
+	namespace Time
+	{
+		extern AlarmSet alarms;
+		extern Datetime datetime;
 	}
 }

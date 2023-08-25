@@ -3,11 +3,10 @@
 #pragma once
 
 
-
 #include <stdint.h>
 
 
-class Datetime;
+class Time;
 
 
 class Alarm
@@ -16,27 +15,19 @@ class Alarm
 		uint8_t _hour;
 		uint8_t _minute;
 
+		unsigned long _last_dismiss;
+		// The timestamp at which an alarm was last dismissed. Used to determine when 
+
 	public:
+		Alarm();
 		Alarm(uint8_t hour, uint8_t minute);
-};
 
+		void dismiss();
 
-class AlarmInstance: Alarm
-{
-	private:
-		uint8_t _timestamp;
-		bool _deactivated = false;
+		Alarm& operator=(unsigned long duration_seconds);
+		Alarm& operator=(Alarm& right);
 
-	public:
-		AlarmInstance(unsigned long timestamp);
-		AlarmInstance(uint8_t hour, uint8_t minute, unsigned long _start_of_day);
-
-		void update(unsigned long timestamp);
-		void update(Datetime& datetime);
-		void update(uint8_t hour, uint8_t minute);
-
-		operator unsigned long();
-
-		friend bool operator==(AlarmInstance& alarm_instance, Datetime& datetime);
-		friend bool operator==(Datetime& datetime, AlarmInstance& alarm_instance);
+		bool operator==(Alarm& alarm);
+		friend bool operator==(Alarm& alarm, Time& time);
+		friend bool operator==(Time& time, Alarm& alarm);
 };

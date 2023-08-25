@@ -22,15 +22,16 @@ namespace States
 	void display_time()
 	{
 		Time& display_time = (Time&)Global::display;
-		if(display_time.hour() == Global::datetime.hour() && display_time.minute() == Global::datetime.minute()
-		  && (Date&)Global::display == (Date&)Global::datetime
+		if(display_time.hour() == Global::Time::datetime.hour()
+		  && display_time.minute() == Global::Time::datetime.minute()
+		  && (Date&)Global::display == (Date&)Global::Time::datetime
 		)
 		{
 			return;
 		}
 
-		Global::display = (Date&)Global::datetime;
-		Global::display = (Time&)Global::datetime;
+		Global::display = (Date&)Global::Time::datetime;
+		Global::display = (Time&)Global::Time::datetime;
 		Core1::update_display();
 		// multicore_launch_core1(Core1::update_display);
 		// If alarm time
@@ -42,13 +43,13 @@ namespace States
 
 	void set_time_hour()
 	{
-		Global::datetime.hour(1);  // Testing
+		Global::Time::datetime.hour(1);  // Testing
 	}
 
 
 	void set_time_minute()
 	{
-		Global::datetime.minute(1);  // Testing
+		Global::Time::datetime.minute(1);  // Testing
 	}
 
 

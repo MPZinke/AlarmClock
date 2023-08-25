@@ -18,8 +18,8 @@ class Display
 	public:
 		static const uint16_t RENDER_TIME;
 
-		Display(uint8_t eInk_DC=4, uint8_t eInk_reset=7, uint8_t eInk_CS=17, uint8_t eInk_SRAM_CS=5,
-			uint8_t eInk_busy=10, MbedSPI& spi=Global::Hardware::SPI1
+		Display(uint8_t eInk_DC=4, uint8_t eInk_reset=6, uint8_t eInk_CS=17, uint8_t eInk_SRAM_CS=5,
+			uint8_t eInk_busy=7, MbedSPI& spi=Global::Hardware::SPI1
 		);
 
 		void begin();

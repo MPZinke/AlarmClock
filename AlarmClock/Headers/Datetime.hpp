@@ -3,15 +3,11 @@
 #pragma once
 
 
-
-#include "Date.hpp"
-#include "Time.hpp"
-
-
 #include <stdint.h>
 
 
-class Alarm;
+#include "Date.hpp"
+#include "Time.hpp"
 
 
 class Datetime: public Date, public Time
@@ -34,7 +30,4 @@ class Datetime: public Date, public Time
 		operator Time&();
 		Datetime& operator=(unsigned long timestamp);
 		void operator++();
-
-		// friend bool operator==(Alarm& alarm, Datetime& datetime);
-		// friend bool operator==(Datetime& datetime, Alarm& alarm);
 };
