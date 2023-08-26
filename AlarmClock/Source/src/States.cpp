@@ -33,7 +33,7 @@ namespace States
 
 		Global::display = (Date&)Global::Time::datetime;
 		Global::display = (Time&)Global::Time::datetime;
-		Core1::update_display();
+		xTaskCreatePinnedToCore((TaskFunction_t)Core1::update_display, "Update Display", 10000, NULL, 2, NULL, 1);
 	}
 
 

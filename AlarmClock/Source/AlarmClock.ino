@@ -1,7 +1,10 @@
 
 
-#include <pico/multicore.h>
+#include <Arduino_FreeRTOS.h>
+// #include <FreeRTOS.h>
 
+// #include "FreeRTOS.h" /* Must come first. */
+// #include "task.h"     /* RTOS task related API prototypes. */
 
 #include "Headers/Global.hpp"
 
@@ -20,7 +23,6 @@ void setup()
 	Global::BlinkingLight::state = false;  // DEVELOPMENT
 
 	// Core1 setup
-	multicore_launch_core1(Core1::main);
 
 	// Audio setup
 	Global::Hardware::Serial2.begin(9600);
@@ -33,6 +35,13 @@ void setup()
 	// Start initial steps
 	Core1::update_display();
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
+
+	xTaskCreatePinnedToCore((TaskFunction_t)loop, "Clock", 10000, NULL, 2, NULL, 0);
+
+	rtc_wdt_protect_off();
+	rtc_wdt_disable();
+	disableCore0WDT();
+	disableLoopWDT();
 }
 
 
