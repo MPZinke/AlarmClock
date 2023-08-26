@@ -11,8 +11,7 @@
 
 namespace Global
 {
-	Display display(Global::Time::datetime);
-	extern StaticList<3, States::State> core0_state(States::HOME);
+	StaticList<3, States::State> core0_state(States::HOME);
 
 	namespace Audio
 	{
@@ -38,4 +37,6 @@ namespace Global
 		StaticList<10, Alarm> alarms;
 		Datetime datetime(2023, 8, 17);
 	}
+
+	Display display(Global::Time::datetime);
 }

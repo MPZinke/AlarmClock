@@ -33,7 +33,7 @@ namespace States
 
 		Global::display = (Date&)Global::Time::datetime;
 		Global::display = (Time&)Global::Time::datetime;
-		multicore_fifo_push_blocking(States::UPDATE_DISPLAY);
+		Core1::update_display();
 	}
 
 

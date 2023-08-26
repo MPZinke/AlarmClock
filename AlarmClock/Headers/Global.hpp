@@ -21,7 +21,7 @@ class Display;
 
 namespace Global
 {
-	// extern Display display;
+	extern Display display;
 	extern StaticList<3, States::State> core0_state;
 	extern StaticList<3, States::State> core1_state;
 
