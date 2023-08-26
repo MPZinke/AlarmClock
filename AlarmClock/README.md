@@ -13,14 +13,14 @@ brew install cmake arm-none-eabi-gcc
 ## Create Structure
 Starting in the base directory
 ```bash
-touch CMakeLists.txt
-touch pico_sdk_import.cmake  # FROM: https://github.com/raspberrypi/pico-examples/blob/master/pico_sdk_import.cmake
-
 git clone https://github.com/raspberrypi/pico-sdk.git
 cd pico-sdk
 git submodule update --init
 
 cd ../<PROJECT NAME>
+touch CMakeLists.txt
+touch pico_sdk_import.cmake  # FROM: https://github.com/raspberrypi/pico-examples/blob/master/pico_sdk_import.cmake
+
 mkdir FreeRTOS
 cd FreeRTOS
 git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git
@@ -35,7 +35,6 @@ touch CMakeLists.txt
 Final Structure
 ```
 ~/
-├── README.md  [error opening dir]
 ├── <PROJECT NAME>/
 │		├── CMakeLists.txt
 │		├── FreeRTOS/

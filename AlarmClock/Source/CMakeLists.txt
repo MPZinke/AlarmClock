@@ -1,9 +1,9 @@
-add_executable(test
+add_executable(AlarmClock
 	main.cpp
 )
 
-target_link_libraries(test
-	pico_stdlib freertos
+target_link_libraries(AlarmClock
+	arduino-compat DFMiniMp3 freertos pico_stdlib
 )
 
-pico_add_extra_outputs(test)
+pico_add_extra_outputs(AlarmClock)

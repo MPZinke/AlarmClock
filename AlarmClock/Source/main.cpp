@@ -16,6 +16,9 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
+#include <Arduino.h>
+#include <DFMiniMp3.h>
+
 
 void led_task()
 {   
