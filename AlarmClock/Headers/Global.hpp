@@ -8,7 +8,7 @@
 
 #include "Alarm.hpp"
 #include "Audio.hpp"
-#include "List.hpp"
+#include "StaticList.hpp"
 #include "States.hpp"
 
 
@@ -21,9 +21,9 @@ class Display;
 
 namespace Global
 {
-	extern Display display;
-	extern List<States::State> core0_state;
-	extern List<States::State> core1_state;
+	// extern Display display;
+	extern StaticList<3, States::State> core0_state;
+	extern StaticList<3, States::State> core1_state;
 
 	namespace Audio
 	{
@@ -45,7 +45,7 @@ namespace Global
 
 	namespace Time
 	{
-		extern List<Alarm> alarms;
+		extern StaticList<10, Alarm> alarms;
 		extern Datetime datetime;
 	}
 }

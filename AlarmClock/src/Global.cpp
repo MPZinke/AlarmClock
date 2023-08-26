@@ -6,13 +6,13 @@
 
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
-#include "../Headers/List.hpp"
+#include "../Headers/StaticList.hpp"
 
 
 namespace Global
 {
 	Display display(Global::Time::datetime);
-	extern List<States::State> core0_state(States::HOME);
+	extern StaticList<3, States::State> core0_state(States::HOME);
 
 	namespace Audio
 	{
@@ -35,7 +35,7 @@ namespace Global
 
 	namespace Time
 	{
-		List<Alarm> alarms;
+		StaticList<10, Alarm> alarms;
 		Datetime datetime(2023, 8, 17);
 	}
 }

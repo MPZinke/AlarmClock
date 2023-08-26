@@ -11,16 +11,22 @@
 
 
 
-template<class T>
-class List
+template<size_t S, class T>
+class StaticList
 {
 	public:
-		List()
+		StaticList()
 		{}
 
-		List(T start_value)
+		StaticList(T start_value)
 		{
 			_values[0] = start_value;
+			_size = 1;
+		}
+
+		size_t max()
+		{
+			return S;
 		}
 
 		T peek()
@@ -59,10 +65,10 @@ class List
 			return _size;
 		}
 
-		List& operator+=(T value)
+		StaticList& operator+=(T value)
 		{
 			// Keep it safe and only add a value if there is room
-			if(_size != _max)
+			if(_size != S)
 			{
 				_values[_size] = value;
 				_size++;
@@ -84,9 +90,9 @@ class List
 
 			if(index >= _size)
 			{
-				if(_size == _max)
+				if(_size == S)
 				{
-					index = _max - 1;  // Keep index within bounds
+					index = S - 1;  // Keep index within bounds
 				}
 				else
 				{
@@ -98,11 +104,10 @@ class List
 		}
 
 	private:
-		static const uint8_t _max = 10;
 		uint8_t _size = 0;
-		T _values[_max];
+		T _values[S];
 };
 
 
-template class List<Alarm>;
-template class List<States::State>;
+template class StaticList<10, Alarm>;
+template class StaticList<3, States::State>;

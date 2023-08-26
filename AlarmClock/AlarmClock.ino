@@ -10,7 +10,7 @@
 #include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
 #include "Headers/Display.hpp"
-#include "Headers/List.hpp"
+#include "Headers/StaticList.hpp"
 #include "Headers/States.hpp"
 
 
@@ -41,14 +41,17 @@ void loop()
 	unsigned long current_timestamp = millis();
 	if(Global::BlinkingLight::last_switch + 1000 < current_timestamp)  // DEVELOPMENT
 	{  // DEVELOPMENT
-		Global::BlinkingLight::last_switch += 1000;  // DEVELOPMENT
+		for(uint8_t limit = 0xFF; Global::BlinkingLight::last_switch + 1000 < current_timestamp && limit > 0; limit--)  // DEVELOPMENT
+		{  // DEVELOPMENT
+			Global::BlinkingLight::last_switch += 1000;  // DEVELOPMENT
+		}  // DEVELOPMENT
 		Global::BlinkingLight::state = !Global::BlinkingLight::state;  // DEVELOPMENT
 		digitalWrite(LED_BUILTIN, Global::BlinkingLight::state ? HIGH : LOW);  // DEVELOPMENT
 	}  // DEVELOPMENT
 
 	Global::Time::datetime = current_timestamp;
 
-	if((Time&)Global::Time::datetime == Global::Time::alarms[0])
+	if(Global::Time::alarms.size() && (Time&)Global::Time::datetime == Global::Time::alarms[0])
 	{
 		Global::core0_state += States::START_ALARM;
 	}
