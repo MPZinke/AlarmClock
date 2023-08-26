@@ -22,6 +22,7 @@ namespace States
 	void display_time()
 	{
 		Time& display_time = (Time&)Global::display;
+
 		if(display_time.hour() == Global::Time::datetime.hour()
 		  && display_time.minute() == Global::Time::datetime.minute()
 		  && (Date&)Global::display == (Date&)Global::Time::datetime
@@ -32,12 +33,7 @@ namespace States
 
 		Global::display = (Date&)Global::Time::datetime;
 		Global::display = (Time&)Global::Time::datetime;
-		Core1::update_display();
-		// multicore_launch_core1(Core1::update_display);
-		// If alarm time
-		//	Set alarm state
-		// If user input for menu
-		//	Set state to menu
+		multicore_fifo_push_blocking(States::UPDATE_DISPLAY);
 	}
 
 
@@ -61,11 +57,18 @@ namespace States
 	{}
 
 
-	void play_alarm()
+	void start_alarm()
 	{
-		// Global::Audio::player.playFolderTrack(1, 1);
+		Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
 
-		Global::state = STOP_ALARM;
+		Global::core0_state.pop();
+		Global::core0_state += STOP_ALARM;
+	}
+
+
+	void playing_alarm()
+	{
+
 		// Check button press
 		// If button pressed
 			// Stop

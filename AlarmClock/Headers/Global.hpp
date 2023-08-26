@@ -6,22 +6,24 @@
 #include <Adafruit_ThinkInk.h>  // For MbedSPI
 
 
+#include "Alarm.hpp"
 #include "Audio.hpp"
+#include "List.hpp"
 #include "States.hpp"
 
 
-class AlarmSet;
 class Datetime;
 class Display;
 
 
-// ::Global::Audio::DFPlayer type set in Audio.hpp
+// ::Global::Audio::DFPlayer type set in Audio.hpp as to avoid circular importing
 
 
 namespace Global
 {
 	extern Display display;
-	extern States::State state;
+	extern List<States::State> core0_state;
+	extern List<States::State> core1_state;
 
 	namespace Audio
 	{
@@ -43,7 +45,7 @@ namespace Global
 
 	namespace Time
 	{
-		extern AlarmSet alarms;
+		extern List<Alarm> alarms;
 		extern Datetime datetime;
 	}
 }

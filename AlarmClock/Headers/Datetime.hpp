@@ -27,7 +27,8 @@ class Datetime: public Date, public Time
 		void minute(uint8_t new_minute);
 		void second(uint8_t new_second);
 
-		operator Time&();
+		operator Date();
+		operator Time();
 		Datetime& operator=(unsigned long timestamp);
 		void operator++();
 };

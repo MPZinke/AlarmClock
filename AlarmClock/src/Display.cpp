@@ -8,18 +8,19 @@
 
 #include "../Headers/Date.hpp"
 #include "../Headers/Time.hpp"
+#include "../Headers/Datetime.hpp"
 
 
 
 const uint16_t Display::RENDER_TIME = 2000;  // 2 Seconds
 
 
-Display::Display(uint8_t eInk_DC/* =4 */, uint8_t eInk_reset/* =6 */, uint8_t eInk_CS/* =1 */,
-	uint8_t eInk_SRAM_CS/* =5 */, uint8_t eInk_busy/* =7 */, MbedSPI& spi/* =Global::Hardware::SPI1 */
-)
-: _date{Date(2024, 9, 1)}, _time{Time(24, 12)},
-  _eInk{ThinkInk_154_Mono_D67(eInk_DC, eInk_reset, eInk_CS, eInk_SRAM_CS, eInk_busy, &spi)}
-{}
+Display::Display(Datetime& datetime)
+: _eInk{ThinkInk_154_Mono_D67(EINK_DC, EINK_RESET, EINK_CS, EINK_SRAM_CS, EINK_BUSY, &SPI)}
+{
+	_date = (Date&)datetime;
+	_time = (Time&)datetime;
+}
 
 
 Display::operator Date&()

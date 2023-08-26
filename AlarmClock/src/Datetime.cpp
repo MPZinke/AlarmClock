@@ -92,9 +92,15 @@ void Datetime::second(uint8_t second)
 }
 
 
-Datetime::operator Time&()
+Datetime::operator Date()
 {
-	return *this;
+	return Date(_year, _month, _day);
+}
+
+
+Datetime::operator Time()
+{
+	return Time(_hour, _minute, _second);
 }
 
 

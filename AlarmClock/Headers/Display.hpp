@@ -13,14 +13,24 @@
 #include "../Headers/Time.hpp"
 
 
+class Datetime;
+
+
 class Display
 {
 	public:
 		static const uint16_t RENDER_TIME;
 
-		Display(uint8_t eInk_DC=4, uint8_t eInk_reset=6, uint8_t eInk_CS=17, uint8_t eInk_SRAM_CS=5,
-			uint8_t eInk_busy=7, MbedSPI& spi=Global::Hardware::SPI1
-		);
+		enum Default
+		{
+			EINK_DC=4,
+			EINK_RESET=6,
+			EINK_CS=17,
+			EINK_SRAM_CS=5,
+			EINK_BUSY=7
+		};
+
+		Display(Datetime& datetime);
 
 		void begin();
 		void update();

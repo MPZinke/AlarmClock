@@ -56,7 +56,6 @@ Date& Date::operator=(Date& right)
 }
 
 
-
 void Date::operator++()
 /*
 NOTES: Ignores the 400 year rule for leap years.

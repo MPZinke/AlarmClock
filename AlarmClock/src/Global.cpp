@@ -4,15 +4,15 @@
 #include "../Headers/Global.hpp"
 
 
-#include "../Headers/AlarmSet.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
+#include "../Headers/List.hpp"
 
 
 namespace Global
 {
-	Display display(4, 6, 1, 5, 7, SPI);
-	States::State state = States::DISPLAY_TIME;
+	Display display(Global::Time::datetime);
+	extern List<States::State> core0_state(States::HOME);
 
 	namespace Audio
 	{
@@ -35,7 +35,7 @@ namespace Global
 
 	namespace Time
 	{
-		AlarmSet alarms;
+		List<Alarm> alarms;
 		Datetime datetime(2023, 8, 17);
 	}
 }
