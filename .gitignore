@@ -1,7 +1,13 @@
 .DS_Store
-pico-sdk
-AlarmClock/build
-AlarmClock/FreeRTOS/FreeRTOS-Kernel
+
+AlarmClock/build/
+
+AlarmClock/Adafruit/Adafruit_EPD/
+AlarmClock/Adafruit/Adafruit-GFX-Library/
+AlarmClock/Adafruit/Adafruit_BusIO/
+AlarmClock/DFMiniMp3/DFMiniMp3/
+AlarmClock/FreeRTOS/FreeRTOS-Kernel/
+AlarmClock/pico-sdk/
 
 
 !CMakeLists.txt
