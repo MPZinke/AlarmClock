@@ -79,6 +79,12 @@
 #define INCLUDE_xTaskGetHandle                  0
 #define INCLUDE_xTaskResumeFromISR              1
 
+// FROM: https://www.reddit.com/r/embedded/comments/yle01h/using_smpspecific_apis_when_running_freertos_on/?rdt=34627
+#define configUSE_CORE_AFFINITY 1
+#define configRUN_MULTIPLE_PRIORITIES 1
+#define configNUMBER_OF_CORES 2
+#define configNUM_CORES 2
+
 /* A header file that defines trace macro can be included here. */
 
 #endif /* FREERTOS_CONFIG_H */

@@ -1,5 +1,9 @@
 .DS_Store
-**/pico-sdk/
-**/AlarmClock/build/
-**/AlarmClock/FreeRTOS/FreeRTOS-Kernel/
+pico-sdk
+AlarmClock/build
+AlarmClock/FreeRTOS/FreeRTOS-Kernel
+
+
 !CMakeLists.txt
+!AlarmClock/FreeRTOS/FreeRTOS-Kernel/portable/ThirdParty/GCC/RP2040/include/portmacro.h
+!AlarmClock/FreeRTOS/FreeRTOS-Kernel/tasks.c

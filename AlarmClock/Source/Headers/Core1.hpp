@@ -9,5 +9,5 @@ Functions that run on or for Core 1
 */
 {
 	void main();
-	void update_display();
+	void display_time();
 }

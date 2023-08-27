@@ -15,12 +15,29 @@
 const uint16_t Display::RENDER_TIME = 2000;  // 2 Seconds
 
 
+Display::Display()
+: _eInk{ThinkInk_154_Mono_D67(EINK_DC, EINK_RESET, EINK_CS, EINK_SRAM_CS, EINK_BUSY, &SPI)}
+{}
+
+
 Display::Display(Datetime& datetime)
 : _eInk{ThinkInk_154_Mono_D67(EINK_DC, EINK_RESET, EINK_CS, EINK_SRAM_CS, EINK_BUSY, &SPI)}
 {
 	_date = (Date&)datetime;
 	_time = (Time&)datetime;
 }
+
+
+Display::Display(Time time)
+: _time{time},
+  _eInk{ThinkInk_154_Mono_D67(EINK_DC, EINK_RESET, EINK_CS, EINK_SRAM_CS, EINK_BUSY, &SPI)}
+{}
+
+
+Display::Display(Date& date, Time& time)
+: _date{date}, _time{time},
+  _eInk{ThinkInk_154_Mono_D67(EINK_DC, EINK_RESET, EINK_CS, EINK_SRAM_CS, EINK_BUSY, &SPI)}
+{}
 
 
 Display::operator Date&()

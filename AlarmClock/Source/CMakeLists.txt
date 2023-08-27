@@ -12,7 +12,7 @@ add_executable(AlarmClock
 	src/Time.cpp
 )
 
-target_link_libraries(AlarmClock arduino-compat DFMiniMp3 freertos pico_stdlib adafruit-epd)
+target_link_libraries(AlarmClock arduino-compat DFMiniMp3 FreeRTOS pico_stdlib adafruit-epd)
 
 pico_enable_stdio_usb(AlarmClock 1)
 pico_enable_stdio_uart(AlarmClock 0)

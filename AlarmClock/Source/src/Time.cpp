@@ -3,19 +3,38 @@
 #include "../Headers/Time.hpp"
 
 
+#include <Arduino.h>
+
 
 Time::Time(unsigned long duration_seconds)
 {
-	_hour = duration_seconds / 3600;
-	unsigned long hour_seconds = _hour * 3600;
-	_minute = (duration_seconds - hour_seconds) / 60;
-	_second = duration_seconds - hour_seconds - (_minute * 60);
+	if(duration_seconds >= 86400)
+	{
+		duration_seconds /= 86400;
+	}
+	if(duration_seconds == 0)
+	{
+		_hour = 0;
+		_minute = 0;
+		_second = 0;
+	}
+	else
+	{
+		_hour = duration_seconds / 3600;
+		unsigned long hour_seconds = _hour * 3600;
+		_minute = (duration_seconds - hour_seconds) / 60;
+		_second = duration_seconds - hour_seconds - (_minute * 60);
+	}
 }
 
 Time::Time(uint8_t hour/* =0 */, uint8_t minute/* =0 */, uint8_t second/* =0 */)
 // Time::Time(uint8_t hour=0, uint8_t minute=0, uint8_t second=0)
 : _hour{hour}, _minute{minute}, _second{second}
-{}
+{
+	assert(hour < 24);
+	assert(minute < 60);
+	assert(second < 60);
+}
 
 
 uint8_t Time::hour() const

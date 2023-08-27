@@ -7,11 +7,13 @@
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/StaticList.hpp"
+#include "../Headers/Time.hpp"
 
 
 namespace Global
 {
 	StaticList<3, States::State> core0_state(States::HOME);
+	StaticList<3, States::State> core1_state(States::HOME);
 
 	namespace Audio
 	{
@@ -32,5 +34,5 @@ namespace Global
 		Datetime datetime(2023, 8, 17);
 	}
 
-	Display display(Global::Time::datetime);
+	Display display(::Time((unsigned long)360));
 }

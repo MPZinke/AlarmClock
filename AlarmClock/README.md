@@ -24,6 +24,7 @@ touch pico_sdk_import.cmake  # FROM: https://github.com/raspberrypi/pico-example
 mkdir FreeRTOS
 cd FreeRTOS
 git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+git checkout smp
 touch CMakeLists.txt
 touch FreeRTOSConfig.h
 
@@ -31,6 +32,8 @@ cd ../<SOURCE FOLDER NAME>
 touch main.cpp
 touch CMakeLists.txt
 ```
+
+**Make sure you copy the Other/Asset/FreeRTOS files to the their corresponding places in the FreeRTOS folder**
 
 Final Structure
 ```

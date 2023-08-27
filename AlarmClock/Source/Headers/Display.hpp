@@ -30,7 +30,10 @@ class Display
 			EINK_BUSY=7
 		};
 
+		Display();
 		Display(Datetime& datetime);
+		Display(Time time);
+		Display(Date& date, Time& time);
 
 		void begin();
 		void update();

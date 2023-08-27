@@ -9,6 +9,9 @@
 #include "States.hpp"
 
 
+#define loop while(true)
+
+
 class Datetime;
 class Display;
 
