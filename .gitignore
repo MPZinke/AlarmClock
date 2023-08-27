@@ -1,5 +1,4 @@
 .DS_Store
 **/pico-sdk/
 **/AlarmClock/build/
-**/AlarmClock/DFMiniMp3/
 **/AlarmClock/FreeRTOS/FreeRTOS-Kernel/

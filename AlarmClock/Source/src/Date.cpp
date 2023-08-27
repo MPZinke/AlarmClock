@@ -4,11 +4,11 @@
 
 
 
-Date::Date(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
+Date::Date(uint16_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : _year{year}, _month{month}, _day{day}
 {}
 
-uint8_t Date::year()
+uint16_t Date::year()
 {
 	return _year;
 }
@@ -26,7 +26,7 @@ uint8_t Date::day()
 }
 
 
-void Date::year(uint8_t year)
+void Date::year(uint16_t year)
 {
 	_year = year;
 }

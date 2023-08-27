@@ -16,7 +16,7 @@ class Datetime: public Date, public Time
 		unsigned long _start_of_day;  // Milliseconds
 
 	public:
-		Datetime(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
+		Datetime(uint16_t year=2023, uint8_t month=8, uint8_t day=17);
 
 		uint8_t hour() const;
 		uint8_t minute() const;
@@ -27,8 +27,6 @@ class Datetime: public Date, public Time
 		void minute(uint8_t new_minute);
 		void second(uint8_t new_second);
 
-		operator Date();
-		operator Time();
 		Datetime& operator=(unsigned long timestamp);
 		void operator++();
 };

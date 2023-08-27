@@ -15,14 +15,24 @@
 #include <task.h>
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "SerialUART.h"
+// #include "SerialUART.h"
 
 #include <Arduino.h>
 #include <DFMiniMp3.h>
 
-#include <stdio.h>
-#include "pico/stdlib.h"
-#include "SPI.h"
+
+#include "Headers/Global.hpp"
+
+
+#include "Headers/Audio.hpp"
+#include "Headers/Core1.hpp"
+#include "Headers/Datetime.hpp"
+// #include "Headers/Display.hpp"
+#include "Headers/StaticList.hpp"
+#include "Headers/States.hpp"
+
+
+#define loop while(true)
 
 
 class Notifier;
@@ -45,33 +55,88 @@ class Notifier
 };
 
 
-DFPlayer player(Serial1);
+int main()
+{
+	Global::BlinkingLight::last_switch = millis();  // DEVELOPMENT
+	Global::BlinkingLight::state = false;  // DEVELOPMENT
 
+	// Initialize LED pin
+	gpio_init(PICO_DEFAULT_LED_PIN);
+	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-int main() {
+	// Initialize chosen serial port
+	stdio_init_all();
 
-    const uint led_pin = 25;
+	Global::Audio::serial.begin(9600);
+	Global::Audio::player.begin();
+	Global::Audio::player.setVolume(Global::Audio::volume);
+	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
-    // Initialize LED pin
-    gpio_init(led_pin);
-    gpio_set_dir(led_pin, GPIO_OUT);
+	loop
+	{
+		unsigned long current_timestamp = millis();
+		if(Global::BlinkingLight::last_switch + 1000 < current_timestamp)  // DEVELOPMENT
+		{  // DEVELOPMENT
+			for(uint8_t limit = 0xFF; Global::BlinkingLight::last_switch + 1000 < current_timestamp && limit > 0; limit--)  // DEVELOPMENT
+			{  // DEVELOPMENT
+				Global::BlinkingLight::last_switch += 1000;  // DEVELOPMENT
+			}  // DEVELOPMENT
+			Global::BlinkingLight::state = !Global::BlinkingLight::state;  // DEVELOPMENT
+			gpio_put(PICO_DEFAULT_LED_PIN, Global::BlinkingLight::state);  // DEVELOPMENT
+		}  // DEVELOPMENT
 
-    // Initialize chosen serial port
-    stdio_init_all();
+		Global::Time::datetime = current_timestamp;
 
-    Serial1.begin(9600);
-	player.begin();
-	player.setVolume(5);
-	player.playFolderTrack(1,1);
+		if(Global::Time::alarms.size() && (Time&)Global::Time::datetime == Global::Time::alarms[0])
+		{
+			Global::core0_state += States::START_ALARM;
+		}
 
-    // Loop forever
-    while (true) {
+		// I have elected to this switch-case as opposed to an array of functions to make the code safer
+		switch(Global::core0_state.peek())
+		{
+			case States::HOME:
+			{
+				States::display_time();
+				break;
+			}
+			case States::SETTING_DATETIME_HOUR:
+			{
+				States::set_time_hour();
+				break;
+			}
+			case States::SETTING_DATETIME_MINUTE:
+			{
+				States::set_time_minute();
+				break;
+			}
+			case States::SETTING_ALARM_HOUR:
+			{
+				States::set_alarm_hour();
+				break;
+			}
+			case States::SETTING_ALARM_MINUTE:
+			{
+				States::set_alarm_minute();
+				break;
+			}
+			case States::START_ALARM:
+			{
+				States::start_alarm();
+				break;
+			}
+			case States::PLAYING_ALARM:
+			{
+				States::playing_alarm();
+				break;
+			}
+			case States::STOP_ALARM:
+			{
+				States::stop_alarm();
+				break;
+			}
+		}
 
-        // Blink LED
-        printf("Blinking!\r\n");
-        gpio_put(led_pin, true);
-        sleep_ms(1000);
-        gpio_put(led_pin, false);
-        sleep_ms(1000);
-    }
+		sleep_ms(50);
+	}
 }

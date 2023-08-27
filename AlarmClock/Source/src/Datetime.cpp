@@ -1,19 +1,16 @@
 
 
-#pragma once
-
-
 #include "../Headers/Datetime.hpp"
 
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 
 #include "../Headers/Alarm.hpp"
 
 
 
-Datetime::Datetime(uint8_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
+Datetime::Datetime(uint16_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis()}
 {
 	// assert(2000 < _year && _year < 2400);  // Since I didn't code the 400 year rule for leap years
@@ -89,18 +86,6 @@ void Datetime::second(uint8_t second)
 	_start_of_day = current_timestamp - prior_hour_milliseconds - prior_minute_milliseconds - (second * 1000ul);
 
 	_second = second;
-}
-
-
-Datetime::operator Date()
-{
-	return Date(_year, _month, _day);
-}
-
-
-Datetime::operator Time()
-{
-	return Time(_hour, _minute, _second);
 }
 
 

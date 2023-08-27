@@ -3,9 +3,6 @@
 #pragma once
 
 
-#include <Adafruit_ThinkInk.h>  // For MbedSPI
-
-
 #include "Alarm.hpp"
 #include "Audio.hpp"
 #include "StaticList.hpp"
@@ -13,7 +10,7 @@
 
 
 class Datetime;
-class Display;
+// class Display;
 
 
 // ::Global::Audio::DFPlayer type set in Audio.hpp as to avoid circular importing
@@ -21,13 +18,14 @@ class Display;
 
 namespace Global
 {
-	extern Display display;
+	// extern Display display;
 	extern StaticList<3, States::State> core0_state;
 	extern StaticList<3, States::State> core1_state;
 
 	namespace Audio
 	{
 		extern DFPlayer player;
+		extern SerialUART& serial;
 		extern uint8_t volume;
 	}
 
@@ -35,12 +33,6 @@ namespace Global
 	{
 		extern unsigned long last_switch;
 		extern bool state;
-	}
-
-	namespace Hardware
-	{
-		extern MbedSPI SPI1;
-		extern UART Serial2;
 	}
 
 	namespace Time

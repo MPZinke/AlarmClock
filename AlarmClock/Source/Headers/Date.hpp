@@ -9,7 +9,7 @@
 class Date
 {
 	protected:
-		uint8_t _year;
+		uint16_t _year;
 		uint8_t _month;
 		uint8_t _day;
 
@@ -30,13 +30,13 @@ class Date
 			DECEMBER=12
 		};
 
-		Date(uint8_t year=2023, uint8_t month=8, uint8_t day=17);
+		Date(uint16_t year=2023, uint8_t month=8, uint8_t day=17);
 
-		uint8_t year();
+		uint16_t year();
 		uint8_t month();
 		uint8_t day();
 
-		void year(uint8_t year);
+		void year(uint16_t year);
 		void month(uint8_t month);
 		void day(uint8_t day);
 

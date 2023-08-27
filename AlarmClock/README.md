@@ -65,13 +65,13 @@ make
 
 ### `~/<PROJECT NAME>/<SOURCE FOLDER NAME>/CMakeLists.txt`
 ```cmake
-add_executable(test
-	main.cpp
-)
+add_executable(test main.cpp)
 
-target_link_libraries(test
-	pico_stdlib freertos
-)
+target_link_libraries(test pico_stdlib freertos)
+
+
+pico_enable_stdio_usb(AlarmClock 1)
+pico_enable_stdio_uart(AlarmClock 0)
 
 pico_add_extra_outputs(test)
 ```
