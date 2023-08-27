@@ -38,12 +38,16 @@ Display::operator Time&()
 Display& Display::operator=(Date& right)
 {
 	_date = right;
+
+	return *this;
 }
 
 
 Display& Display::operator=(Time& right)
 {
 	_time = right;
+
+	return *this;
 }
 
 

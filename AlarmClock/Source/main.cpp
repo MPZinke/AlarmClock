@@ -15,7 +15,6 @@
 #include <task.h>
 #include <stdio.h>
 #include "pico/stdlib.h"
-// #include "SerialUART.h"
 
 #include <Arduino.h>
 #include <DFMiniMp3.h>
@@ -27,7 +26,7 @@
 #include "Headers/Audio.hpp"
 #include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
-// #include "Headers/Display.hpp"
+#include "Headers/Display.hpp"
 #include "Headers/StaticList.hpp"
 #include "Headers/States.hpp"
 
@@ -67,9 +66,13 @@ int main()
 	// Initialize chosen serial port
 	stdio_init_all();
 
+	Global::display.begin();
+
 	Global::Audio::serial.begin(9600);
 	Global::Audio::player.begin();
 	Global::Audio::player.setVolume(Global::Audio::volume);
+
+	Core1::update_display();
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
 	loop

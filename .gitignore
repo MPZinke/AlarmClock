@@ -2,3 +2,4 @@
 **/pico-sdk/
 **/AlarmClock/build/
 **/AlarmClock/FreeRTOS/FreeRTOS-Kernel/
+!CMakeLists.txt

@@ -17,6 +17,6 @@ namespace Core1
 {
 	void update_display()
 	{
-		// Global::display.update();
+		Global::display.update();
 	}
 }

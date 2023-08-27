@@ -10,7 +10,7 @@
 
 
 class Datetime;
-// class Display;
+class Display;
 
 
 // ::Global::Audio::DFPlayer type set in Audio.hpp as to avoid circular importing
@@ -18,7 +18,6 @@ class Datetime;
 
 namespace Global
 {
-	// extern Display display;
 	extern StaticList<3, States::State> core0_state;
 	extern StaticList<3, States::State> core1_state;
 
@@ -40,4 +39,6 @@ namespace Global
 		extern StaticList<10, Alarm> alarms;
 		extern Datetime datetime;
 	}
+
+	extern Display display;
 }

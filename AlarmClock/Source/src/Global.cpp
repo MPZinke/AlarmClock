@@ -5,7 +5,7 @@
 
 
 #include "../Headers/Datetime.hpp"
-// #include "../Headers/Display.hpp"
+#include "../Headers/Display.hpp"
 #include "../Headers/StaticList.hpp"
 
 
@@ -32,5 +32,5 @@ namespace Global
 		Datetime datetime(2023, 8, 17);
 	}
 
-	// Display display(Global::Time::datetime);
+	Display display(Global::Time::datetime);
 }
