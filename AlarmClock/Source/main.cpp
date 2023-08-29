@@ -150,6 +150,8 @@ int main()
 
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
+	// FROM: https://forums.raspberrypi.com/viewtopic.php?t=338861
+	gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, on_interrupt);
 	printf("All Initialized\r\n");
 	xTaskCreate((TaskFunction_t)main_loop, "Clock", 256, NULL, 1, NULL);
 
