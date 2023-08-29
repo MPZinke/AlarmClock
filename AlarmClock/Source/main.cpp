@@ -52,6 +52,12 @@ class Notifier
 };
 
 
+void on_interrupt(uint gpio, uint32_t events)
+{
+	printf("It was activated\r\n");
+}
+
+
 void main_loop()
 {
 	loop
