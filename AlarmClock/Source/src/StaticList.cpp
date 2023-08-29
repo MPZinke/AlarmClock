@@ -44,8 +44,13 @@ class StaticList
 			return _values[_size];
 		}
 
-		bool remove(uint8_t index)
+		bool remove(int index)
 		{
+			if(index < 0)
+			{
+				index = _size + index;  // EG. `index = 7 + -1;`
+			}
+
 			if(index >= _size)
 			{
 				return false;
@@ -60,10 +65,12 @@ class StaticList
 			return true;
 		}
 
+
 		uint8_t size()
 		{
 			return _size;
 		}
+
 
 		StaticList& operator+=(T value)
 		{
@@ -77,15 +84,25 @@ class StaticList
 			return *this;
 		}
 
-		T operator[](uint8_t index) const  // Getter
+		T operator[](int index) const  // Getter
 		{
+			if(index < 0)
+			{
+				index = _size + index;  // EG. `index = 7 + -1;`
+			}
+
 			assert(index < _size);
 
 			return _values[index];
 		}
 
-		T& operator[](uint8_t index)  // Setter
+		T& operator[](int index)  // Setter
 		{
+			if(index < 0)
+			{
+				index = _size + index;  // EG. `index = 7 + -1;`
+			}
+
 			assert(index < _size);
 
 			if(index >= _size)

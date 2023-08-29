@@ -14,7 +14,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <stdio.h>
-#include "pico/stdlib.h"
+#include <pico/stdlib.h>
+#include <hardware/pio.h>
 
 #include <Arduino.h>
 #include <DFMiniMp3.h>
@@ -149,14 +150,11 @@ int main()
 	// FROM: https://github.com/ghubcoder/PicoFreertosBlink/blob/master/blink.c
 	//  VIA: https://ghubcoder.github.io/posts/using-multiple-cores-pico-freertos/
 	//  AND: https://embeddedcomputing.com/technology/open-source/linux-freertos-related/using-freertos-with-the-raspberry-pi-pico-part-4
-    TaskHandle_t display_handle;
-    UBaseType_t uxCoreAffinityMask;
-    xTaskCreate((TaskFunction_t)Core1::main, "Display", 256, NULL, 1, &( display_handle ));
-    // To force to run on core0:
-    // uxCoreAffinityMask = ( ( 1 << 0 ));
-    // force to run on core1
-    uxCoreAffinityMask = ( ( 1 << 1 ));
-    vTaskCoreAffinitySet( display_handle, uxCoreAffinityMask );
+	TaskHandle_t display_handle;
+	UBaseType_t uxCoreAffinityMask;
+	xTaskCreate((TaskFunction_t)Core1::main, "Display", 256, NULL, 1, &display_handle);
+	uxCoreAffinityMask = 1 << 1;  // Force to run on core1. To force to run on core0: uxCoreAffinityMask = 1 << 0;
+	vTaskCoreAffinitySet(display_handle, uxCoreAffinityMask);
 
 	vTaskStartScheduler();
 
