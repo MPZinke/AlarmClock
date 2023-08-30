@@ -86,12 +86,20 @@ namespace States
 
 	namespace Alarm
 	{
-		void set_hour()
-		{}
+		namespace Menu
+		{
+		}
 
 
-		void set_minute()
-		{}
+		namespace Set
+		{
+			void set_hour()
+			{}
+
+
+			void set_minute()
+			{}
+		}
 
 
 		namespace Alarm
