@@ -28,6 +28,12 @@ namespace Global
 		bool state;
 	}
 
+	namespace Inputs
+	{
+		StaticList<5, Button> buttons(Button(0), Button(1), Button(2), Button(3), Button(4));
+		Encoder encoder(2, 3);
+	}
+
 	namespace Time
 	{
 		StaticList<10, Alarm> alarms;

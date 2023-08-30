@@ -6,6 +6,10 @@ class Encoder
 	public:
 		Encoder(uint8_t A_pin, uint8_t B_pin);
 
+		void acknowledge();
+		bool has_changed();
+		unsigned long last_changed();
+		void update();
 
 	private:
 		enum Bit
@@ -19,11 +23,9 @@ class Encoder
 		const uint8_t _A_pin;
 		const uint8_t _B_pin;
 
-		Date _late_move_date;
-		unsigned long _last_move_timestamp;
 
-		int _position = 0;
+		bool _acknowledged = true;
+		unsigned long _last_change;
+		int32_t _change = 0;  // Position change since last acknowledge
 		uint8_t _pull;  // 0b000000BA
-
-		uint8_t change();
 };

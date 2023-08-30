@@ -30,6 +30,8 @@ class Date
 			DECEMBER=12
 		};
 
+		static const uint8_t DAYS_IN_MONTH[12];
+
 		Date(uint16_t year=2023, uint8_t month=8, uint8_t day=17);
 
 		uint16_t year();
@@ -42,6 +44,9 @@ class Date
 
 		Date& operator=(Date& right);
 
+		uint32_t operator-(Date& right);
+
 		void operator++();
 		bool operator==(Date& right);
+		bool operator<=(Date& right);
 };

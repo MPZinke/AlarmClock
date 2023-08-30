@@ -16,6 +16,30 @@
 
 namespace States
 {
+	namespace Home
+	{
+		void main()
+		{
+			// Update encoder && menu button
+
+			// Check if the encoder has been changed
+			if(Global::Hardware::encoder)
+			{
+				adjust_audio();
+			}
+
+			// If menu button has been pressed
+
+		}
+
+
+		void adjust_audio()
+		{
+			// Get change from encoder
+		}
+	}
+
+
 	// Display time
 	void display_time()
 	{}

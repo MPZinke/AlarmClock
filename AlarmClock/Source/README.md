@@ -9,6 +9,22 @@
 -                                                                                                                      -
 ----------------------------------------------------------------------------------------------------------------------->
 
+## Decisions
+
+### Benefits Of Using An Interrupt
+- Interrupt allows for immediate recognition of hardware input
+
+### Disadvantages Of Using An Interrupt
+- Stops operating code
+- Returning to context needs to occur quickly, meaning delay in an Interrupt callback is impractical
+
+### Benefits Of Checking On Each Iteration
+- Does not interrupt time based operations like SPI
+- Can begin operations when ready to
+
+### Final Decision
+- 
+
 
 ## Encoder
 

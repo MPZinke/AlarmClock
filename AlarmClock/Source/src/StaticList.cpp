@@ -24,6 +24,18 @@ class StaticList
 			_size = 1;
 		}
 
+		StaticList(T start_value0, T start_value1, ...)
+		{
+			_values[0] = start_value0;
+			_values[1] = start_value1;
+			for(uint x = 2; x < S; x++)
+			{
+				va_list variable_list;
+				va_start(variable_list, "");
+				_values[x] = va_arg(variable_list, Button);
+			}
+		}
+
 		size_t max()
 		{
 			return S;
@@ -127,4 +139,5 @@ class StaticList
 
 
 template class StaticList<10, Alarm>;
+template class StaticList<5, Button>;
 template class StaticList<3, States::State>;

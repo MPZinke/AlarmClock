@@ -12,15 +12,7 @@
 
 Datetime::Datetime(uint16_t year/* =2023 */, uint8_t month/* =8 */, uint8_t day/* =17 */)
 : Date{Date(year, month, day)}, Time{Time()}, _start_of_day{millis()}
-{
-	// assert(2000 < _year && _year < 2400);  // Since I didn't code the 400 year rule for leap years
-	assert(0 < _month && _month < 13);
-	assert(_day <= 28
-		|| (_day <= 29 && _month == FEBRUARY && _year & 0b11 == 0)
-		|| (_day <= 30 && _month != FEBRUARY)
-		|| (_day <= 31 && ((_month <= JULY && _month & 0b1 == 1) || (AUGUST <= _month && _month & 0b1 == 0)))
-	);
-}
+{}
 
 
 uint8_t Datetime::hour() const

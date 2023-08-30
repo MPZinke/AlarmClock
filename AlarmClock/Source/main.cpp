@@ -85,7 +85,7 @@ void main_loop()
 		{
 			case States::HOME:
 			{
-				States::display_time();
+				States::Home::main();
 				break;
 			}
 			case States::SETTING_DATETIME_HOUR:

@@ -30,18 +30,31 @@ Encoder::Encoder(uint8_t A_pin, uint8_t B_pin)
 }
 
 
-int8_t Encoder::change()
+void Encoder::acknowledge()
 {
+	_acknowledged = true;
+	_change = 0;
+}
+
+
+bool Encoder::has_changed()
+{
+	return !_acknowledged;
+}
+
+
+unsigned long Encoder::last_change()
+{
+	return _last_change;
+}
+
+
+void Encoder::update(uint pin, uint32_t events)
+{
+	_acknowledged = false;
+	_last_change = millis();
+
 	uint8_t new_pull = (uint8_t)gpio_is_pulled_down(_A_pin) << A | (uint8_t)gpio_is_pulled_down(_A_pin) << B;
-	if(_pull == new_pull)
-	{
-		return 0;
-	}
-
-	_last_move_date = Global::Time::datetime;
-	_last_move_timestamp = millis();
-	_position += PULLS[_pull][new_pull];
+	_change += PULLS[_pull][new_pull];
 	_pull = new_pull;
-
-	return PULLS[_pull][new_pull];
 }

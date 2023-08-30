@@ -47,6 +47,8 @@ class Display
 	private:
 		Date _date;
 		ThinkInk_154_Mono_D67 _eInk;
+		Date _last_update_date;  // Used to prevent refreshing too frequently
+		unsigned long _last_update_timestamp;  // Used to prevent refreshing too frequently
 		Time _time;
 
 		void print_date();
