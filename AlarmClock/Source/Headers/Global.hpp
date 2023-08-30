@@ -23,17 +23,18 @@ class Encoder;
 
 namespace Global
 {
-	// namespace State
-	// {
+	namespace State
+	{
 		extern StaticList<3, States::State> core0_state;
 		extern StaticList<3, States::State> core1_state;
-	// }
+	}
 
 	namespace Audio
 	{
 		extern DFPlayer player;
 		extern SerialUART& serial;
-		extern uint8_t volume;
+		extern unsigned long start;
+		extern int16_t volume;
 	}
 
 	namespace BlinkingLight

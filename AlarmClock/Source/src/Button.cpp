@@ -49,3 +49,9 @@ Button& operator=(Button right)
 		gpio_set_dir(right)
 	}
 }
+
+
+void Button::static_acknowledge(Button& button)
+{
+	button.acknowledge();
+}

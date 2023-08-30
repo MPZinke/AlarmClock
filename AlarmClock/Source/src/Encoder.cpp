@@ -37,6 +37,12 @@ void Encoder::acknowledge()
 }
 
 
+int16_t Encoder::change()
+{
+	return _change;
+}
+
+
 bool Encoder::has_changed()
 {
 	return !_acknowledged;

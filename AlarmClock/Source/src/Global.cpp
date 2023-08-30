@@ -19,7 +19,8 @@ namespace Global
 	{
 		SerialUART& serial = Serial1;
 		DFPlayer player(Global::Audio::serial);
-		uint8_t volume = 5;
+		unsigned long start;
+		int16_t volume = 5;
 	}
 
 	namespace BlinkingLight

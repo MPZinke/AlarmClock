@@ -8,6 +8,7 @@ class Button
 
 		void acknowledge();
 		bool has_changed();
+		static void static_acknowledge(Button& button);
 		void update();
 
 		Button& operator=(Button right);
@@ -22,4 +23,5 @@ class Button
 		Date _last_released_date;
 		unsigned long _last_released_timestamp;
 };
+
 

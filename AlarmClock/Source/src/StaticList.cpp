@@ -36,6 +36,14 @@ class StaticList
 			}
 		}
 
+		void lambda((void* function)(T& value))
+		{
+			for(uint32_t x = 0; x < _size; x++)
+			{
+				function(_values[x]);
+			}
+		}
+
 		size_t max()
 		{
 			return S;

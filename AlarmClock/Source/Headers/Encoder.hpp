@@ -7,9 +7,10 @@ class Encoder
 		Encoder(uint8_t A_pin, uint8_t B_pin);
 
 		void acknowledge();
+		int16_t change();
 		bool has_changed();
 		unsigned long last_changed();
-		void update();
+		void update(uint pin, uint32_t events);
 
 	private:
 		enum Bit
@@ -25,7 +26,7 @@ class Encoder
 
 
 		bool _acknowledged = true;
+		int16_t _change = 0;  // Position change since last acknowledge
 		unsigned long _last_change;
-		int32_t _change = 0;  // Position change since last acknowledge
 		uint8_t _pull;  // 0b000000BA
 };
