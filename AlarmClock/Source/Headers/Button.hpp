@@ -3,6 +3,15 @@
 class Button
 {
 	public:
+		enum ButtonListIndexMapping
+		{
+			MENU,
+			TOP,
+			RIGHT,
+			BOTTOM,
+			LEFT
+		};
+
 		Button();
 		Button(uint pin);
 

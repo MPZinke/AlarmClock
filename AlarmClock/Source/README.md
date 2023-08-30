@@ -26,6 +26,8 @@
 - 
 
 
+---
+
 ## Encoder
 
 ### Signal
@@ -88,3 +90,65 @@
 	{ 0,  1, -1,  0}
 }
 ```
+
+
+---
+
+# States
+
+## Home
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Left  | Home                | Set volume up.                                                                |
+| Encoder::Right | Home                | Set volume down.                                                              |
+| Button::Center | Menu::Alarm         | Display menu.                                                                 |
+
+## Menu::Alarm
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Right | Menu::Time          | Set menu selection time.                                                      |
+| Encoder::Left  | Menu::Alarm         | None.                                                                         |
+| Button::Center | Alarm::Menu::One    | Select alarm menu.                                                            |
+
+## Menu::Time
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Right | Menu::Alarm         | Set volume up.                                                                |
+| Encoder::Left  | Menu::Date          | None.                                                                         |
+| Button::Center | Time::Menu          | Select alarm menu.                                                            |
+
+## Menu::Date
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Right | Menu::Date          | None.                                                                         |
+| Encoder::Left  | Menu::Alarm         | Set volume up.                                                                |
+| Button::Center | Date::Year          | Select alarm menu.                                                            |
+
+
+## Alarm::Menu::One
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Left  | Alarm::Menu::Two    | Set volume up.                                                                |
+| Encoder::Right | Alarm::Menu::One    | None.                                                                         |
+| Button::Center | Alarm::One::Menu    | Select alarm menu.                                                            |
+
+## Alarm::Menu::Two
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Left  | Alarm::Menu::...    | Set volume up.                                                                |
+| Encoder::Right | Alarm::Menu::One    | None.                                                                         |
+| Button::Center | Alarm::Two::Menu    | Select alarm menu.                                                            |
+
+## Alarm::Menu::...
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Left  | Alarm::Menu::New    | Set volume up.                                                                |
+| Encoder::Right | Alarm::Menu::...-1  | None.                                                                         |
+| Button::Center | Alarm::Two::Menu    | Select alarm menu.                                                            |
+
+## Alarm::Menu::New
+| Input          | Next State          | Action                                                                        |
+|----------------|---------------------|-------------------------------------------------------------------------------|
+| Encoder::Left  | Alarm::Menu::New    | Set volume up.                                                                |
+| Encoder::Right | Alarm::Menu::...-1  | None.                                                                         |
+| Button::Center | Alarm::Two::Menu    | Select alarm menu.                                                            |

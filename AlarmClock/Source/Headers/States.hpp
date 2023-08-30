@@ -3,9 +3,12 @@
 #pragma once
 
 
+typedef uint8_t State;
+
+
 namespace States
 {
-	enum State
+	enum
 	{
 		UPDATE_DISPLAY,
 		HOME,
@@ -19,6 +22,20 @@ namespace States
 		START_ALARM,
 		PLAYING_ALARM,
 		STOP_ALARM
+	};
+
+	class State
+	{
+		public:
+			State(::State state);
+
+			unsigned long start_time();
+
+			operator uint8_t();
+
+		private:
+			uint8_t _state;
+			unsigned long _start_time;
 	};
 
 	void display_time();

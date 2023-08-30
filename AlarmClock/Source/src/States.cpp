@@ -13,15 +13,27 @@
 #include "../Headers/Time.hpp"
 
 
-
 namespace States
 {
+	State::State(::State state)
+	: _state{state}, _start_time{millis()}
+	{}
+
+
+	unsigned long State::start_time()
+	{}
+
+
+	State::operator uint8_t()
+	{
+		return _state;
+	}
+
+
 	namespace Home
 	{
 		void main()
 		{
-			// Update encoder && menu button
-
 			unsigned long current_timestamp = millis();
 
 			// Check if the encoder has been changed
@@ -57,15 +69,17 @@ namespace States
 			Global::Audio::player.setVolume(Global::Audio::volume);
 
 			Global::Hardware::encoder.acknowledge();
+			Global::Hardware::core0_state.lambda(Button::static_acknowledge);
 		}
 
 
 		void set_menu()
 		{
-			Global::States::core0_state.push(States::MENU);
+			Global::States::core0_state.push(State(States::MENU));
 			Global::States::core1_state.push(States::MENU);
 
-			Global::Hardware::buttons[Button::MENU].acknowledge();
+			Global::Hardware::encoder.acknowledge();
+			Global::Hardware::core0_state.lambda(Button::static_acknowledge);
 		}
 	}
 
@@ -84,13 +98,13 @@ namespace States
 		{
 			void start_alarm()
 			{
-				Global::State::core0_state.push(States::PLAYING_ALARM);
+				Global::State::core0_state.push(State(States::PLAYING_ALARM));
 				Global::State::core1_state.push(States::PLAYING_ALARM);
 				Global::Audio::start = millis();
 
 				Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
 
-				Global::Hardware::buttons.lambda(static_acknowledge);
+				Global::Hardware::buttons.lambda(Button::static_acknowledge);
 			}
 
 
@@ -99,7 +113,7 @@ namespace States
 				if(millis() - Global::Audio::start >= 300000)
 				{
 					Global::State::core0_state.pop();
-					Global::State::core0_state.push(States::STOP_ALARM);
+					Global::State::core0_state.push(State(States::STOP_ALARM));
 					Global::State::core1_state.push(States::STOP_ALARM);
 				}
 
@@ -108,8 +122,10 @@ namespace States
 					if(Global::Hardware::buttons.has_changed() && Global::State::core0_state[-1] != States::STOP_ALARM)
 					{
 						Global::State::core0_state.pop();
-						Global::State::core0_state.push(States::STOP_ALARM);
+						Global::State::core0_state.push(State(States::STOP_ALARM));
 						Global::State::core1_state.push(States::STOP_ALARM);
+
+						Global::Hardware::buttons.lambda(Button::static_acknowledge);
 
 						return;
 					}
@@ -121,6 +137,8 @@ namespace States
 			{
 				Global::Audio::player.stop();
 				Global::State::core0_state.pop();
+
+				Global::Hardware::buttons.lambda(Button::static_acknowledge);
 			}
 		}
 	}
@@ -129,7 +147,10 @@ namespace States
 	namespace Time
 	{
 		void set_year()
-		{}
+		{
+			// If 10 seconds have passed
+			if(Global::Hardware::encoder.has_changed() && Global::Hardware::encoder.last_change() >= 600000)
+		}
 
 
 		void set_month()
@@ -147,46 +168,4 @@ namespace States
 		void set_minute()
 		{}
 	}
-
-
-	void set_time_hour()
-	{
-		Global::Time::datetime.hour(1);  // Testing
-	}
-
-
-	void set_time_minute()
-	{
-		Global::Time::datetime.minute(1);  // Testing
-	}
-
-
-	void set_alarm_hour()
-	{}
-
-
-	void set_alarm_minute()
-	{}
-
-
-	void start_alarm()
-	{
-		Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
-
-		Global::core0_state.pop();
-		Global::core0_state += STOP_ALARM;
-	}
-
-
-	void playing_alarm()
-	{
-
-		// Check button press
-		// If button pressed
-			// Stop
-	}
-
-
-	void stop_alarm()
-	{}
 }
