@@ -20,10 +20,11 @@ class StaticList
 		StaticList(T start_value);
 		StaticList(T start_value0, T start_value1, ...);
 
-		void lambda((void* function)(T& value));
+		void lambda(void(*function)(T& value));
 		size_t max();
 		T peek();
 		T pop();
+		void push(T value);
 		bool remove(int index);
 		uint8_t size();
 

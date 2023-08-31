@@ -6,6 +6,7 @@
 
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
+#include "../Headers/Encoder.hpp"
 #include "../Headers/StaticList.hpp"
 #include "../Headers/Time.hpp"
 

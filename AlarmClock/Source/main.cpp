@@ -57,50 +57,83 @@ void main_loop()
 
 		if(Global::Time::alarms.size() && (Time&)Global::Time::datetime == Global::Time::alarms[0])
 		{
-			Global::core0_state += States::START_ALARM;
+			Global::State::core0_state += States::START_ALARM;
 		}
 
 		// I have elected to this switch-case as opposed to an array of functions to make the code safer
-		switch(Global::core0_state[-1])
+		switch(Global::State::core0_state[-1])
 		{
 			case States::HOME:
 			{
 				States::Home::main();
 				break;
 			}
-			case States::SETTING_DATETIME_HOUR:
+
+			// ———— MAIN MENU ———— //
+			case States::Menu::ALARM:
 			{
-				States::set_time_hour();
+				States::Menu::alarm();
 				break;
 			}
-			case States::SETTING_DATETIME_MINUTE:
+			case States::Menu::TIME:
 			{
-				States::set_time_minute();
+				States::Menu::time();
 				break;
 			}
-			case States::SETTING_ALARM_HOUR:
+			case States::Menu::DATE:
 			{
-				States::set_alarm_hour();
+				States::Menu::date();
 				break;
 			}
-			case States::SETTING_ALARM_MINUTE:
+
+			// ———— ALARM ———— //
+			case States::Alarm::Menu::ALARMS:
 			{
-				States::set_alarm_minute();
+				States::Alarm::Menu::alarms();
 				break;
 			}
-			case States::START_ALARM:
+			case States::Alarm::Menu::NEW:
 			{
-				States::start_alarm();
+				States::Alarm::Menu::new_alarm();
 				break;
 			}
-			case States::PLAYING_ALARM:
+
+			// ———— ALARM::SELECTED ———— //
+			case States::Alarm::Seletected::EDIT:
 			{
-				States::playing_alarm();
+				States::Alarm::Seletected::edit();
 				break;
 			}
-			case States::STOP_ALARM:
+			case States::Alarm::Seletected::DELETE_ALARM:
 			{
-				States::stop_alarm();
+				States::Alarm::Seletected::delete_alarm();
+				break;
+			}
+			case States::Alarm::Seletected::Edit::HOUR:
+			{
+				States::Alarm::Seletected::Edit::hour();
+				break;
+			}
+			case States::Alarm::Seletected::Edit::MINUTE:
+			{
+				States::Alarm::Seletected::Edit::minute();
+				break;
+			}
+
+			// ———— ALARM::ALARM ———— //
+			case States::Alarm::Alarm::START_ALARM:
+			{
+				States::Alarm::Alarm::start_alarm();
+				break;
+			}
+			case States::Alarm::Alarm::PLAYING_ALARM:
+			{
+				States::Alarm::Alarm::playing_alarm();
+				break;
+			}
+			case States::Alarm::Alarm::STOP_ALARM:
+			{
+				States::Alarm::Alarm::stop_alarm();
 				break;
 			}
 		}

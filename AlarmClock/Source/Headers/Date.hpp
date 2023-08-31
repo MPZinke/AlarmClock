@@ -44,7 +44,7 @@ class Date
 
 		Date& operator=(Date& right);
 
-		uint32_t operator-(Date& right);
+		int32_t operator-(Date& right);
 
 		void operator++();
 		bool operator==(Date& right);

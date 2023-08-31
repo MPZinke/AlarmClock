@@ -10,18 +10,26 @@
 #include "../Headers/Core1.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
+#include "../Headers/Encoder.hpp"
 #include "../Headers/Time.hpp"
 
 
 namespace States
 {
+	State::State()
+	: _state{NONE}
+	{}
+
+
 	State::State(::State state)
 	: _state{state}, _start_time{millis()}
 	{}
 
 
 	unsigned long State::start_time()
-	{}
+	{
+		return _start_time;
+	}
 
 
 	State::operator uint8_t()
@@ -37,15 +45,14 @@ namespace States
 			unsigned long current_timestamp = millis();
 
 			// Check if the encoder has been changed
-			Encoder& encoder = Global::Hardware::encoder;
-			if(encoder.has_changed() && current_timestamp - encoder.last_change() > 500)
+			Encoder& encoder = Global::Inputs::encoder;
+			if(encoder.has_changed() && current_timestamp - encoder.last_changed() > 500)
 			{
 				adjust_audio();
 			}
 
 			// If menu button has been pressed
-			Button& menu_button = Global::Hardware::buttons[Button::MENU];
-			if(menu_button.has_changed())
+			if(Global::Inputs::buttons[Button::MENU].has_changed())
 			{
 				set_menu();
 			}
@@ -55,7 +62,7 @@ namespace States
 		void adjust_audio()
 		{
 			// Get change from encoder
-			Global::Audio::volume += Global::Hardware::encoder.change();
+			Global::Audio::volume += Global::Inputs::encoder.change();
 
 			if(Global::Audio::volume < 0)
 			{
@@ -68,18 +75,18 @@ namespace States
 
 			Global::Audio::player.setVolume(Global::Audio::volume);
 
-			Global::Hardware::encoder.acknowledge();
-			Global::Hardware::core0_state.lambda(Button::static_acknowledge);
+			Global::Inputs::encoder.acknowledge();
+			Global::Inputs::buttons.lambda(Button::static_acknowledge);
 		}
 
 
 		void set_menu()
 		{
-			Global::States::core0_state.push(State(States::MENU));
-			Global::States::core1_state.push(States::MENU);
+			Global::State::core0_state.push(State(States::MENU_ALARM));
+			Global::State::core1_state.push(States::MENU_ALARM);
 
-			Global::Hardware::encoder.acknowledge();
-			Global::Hardware::core0_state.lambda(Button::static_acknowledge);
+			Global::Inputs::encoder.acknowledge();
+			Global::Inputs::buttons.lambda(Button::static_acknowledge);
 		}
 	}
 
@@ -112,7 +119,7 @@ namespace States
 
 				Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
 
-				Global::Hardware::buttons.lambda(Button::static_acknowledge);
+				Global::Inputs::buttons.lambda(Button::static_acknowledge);
 			}
 
 
@@ -125,15 +132,15 @@ namespace States
 					Global::State::core1_state.push(States::STOP_ALARM);
 				}
 
-				for(uint8_t x = 0; x < Global::Hardware::buttons.size(); x++)
+				for(uint8_t x = 0; x < Global::Inputs::buttons.size(); x++)
 				{
-					if(Global::Hardware::buttons.has_changed() && Global::State::core0_state[-1] != States::STOP_ALARM)
+					if(Global::Inputs::buttons[x].has_changed() && Global::State::core0_state[-1] != States::STOP_ALARM)
 					{
 						Global::State::core0_state.pop();
 						Global::State::core0_state.push(State(States::STOP_ALARM));
 						Global::State::core1_state.push(States::STOP_ALARM);
 
-						Global::Hardware::buttons.lambda(Button::static_acknowledge);
+						Global::Inputs::buttons.lambda(Button::static_acknowledge);
 
 						return;
 					}
@@ -146,7 +153,7 @@ namespace States
 				Global::Audio::player.stop();
 				Global::State::core0_state.pop();
 
-				Global::Hardware::buttons.lambda(Button::static_acknowledge);
+				Global::Inputs::buttons.lambda(Button::static_acknowledge);
 			}
 		}
 	}
@@ -157,7 +164,10 @@ namespace States
 		void set_year()
 		{
 			// If 10 seconds have passed
-			if(Global::Hardware::encoder.has_changed() && Global::Hardware::encoder.last_change() >= 600000)
+			if(Global::Inputs::encoder.has_changed() && Global::Inputs::encoder.last_changed() >= 600000)
+			{
+
+			}
 		}
 
 

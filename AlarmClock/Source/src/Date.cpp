@@ -3,6 +3,9 @@
 #include "../Headers/Date.hpp"
 
 
+#include <Arduino.h>
+
+
 const uint8_t Date::DAYS_IN_MONTH[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
@@ -93,17 +96,12 @@ NOTES: Ignores the 400 year rule for leap years.
 
 int32_t Date::operator-(Date& right)
 {
-	Date &later, &earlier;
+	Date &later = *this, &earlier = right;
 	bool right_is_later = *this <= right;
 	if(right_is_later)
 	{
 		later = right;
 		earlier = *this;
-	}
-	else
-	{
-		later = *this;
-		earlier = right;
 	}
 
 	int32_t days = 0;
@@ -116,7 +114,7 @@ int32_t Date::operator-(Date& right)
 		}
 	}
 
-	for(uint8_t month = earlier._month; month != later._month; (month % 12)++)
+	for(uint8_t month = earlier._month; month != later._month; (month %= 12)++)
 	{
 		days += DAYS_IN_MONTH[month-1];
 		if(month == FEBRUARY && later._year % 4)
@@ -125,8 +123,8 @@ int32_t Date::operator-(Date& right)
 		}
 	}
 
-	day += later._day - earlier._day;
-	return day * (right_is_later * -1 + !right_is_later * 1);
+	days += later._day - earlier._day;
+	return days * (right_is_later * -1 + !right_is_later * 1);
 }
 
 
