@@ -4,6 +4,7 @@
 #include "../Headers/Global.hpp"
 
 
+#include "../Headers/Button.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/Encoder.hpp"
@@ -13,8 +14,11 @@
 
 namespace Global
 {
-	StaticList<3, States::State> core0_state(States::HOME);
-	StaticList<3, States::State> core1_state(States::HOME);
+	namespace State
+	{
+		StaticList<3, States::State> core0_state(States::HOME);
+		StaticList<3, States::State> core1_state(States::HOME);
+	}
 
 	namespace Audio
 	{

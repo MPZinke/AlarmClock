@@ -5,7 +5,6 @@
 
 #include "Alarm.hpp"
 #include "Audio.hpp"
-#include "Button.hpp"
 #include "StaticList.hpp"
 #include "States.hpp"
 
@@ -13,6 +12,7 @@
 #define loop while(true)
 
 
+class Button;
 class Datetime;
 class Display;
 class Encoder;

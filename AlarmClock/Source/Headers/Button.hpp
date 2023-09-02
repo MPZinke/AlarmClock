@@ -1,5 +1,8 @@
 
 
+#include <pico/stdlib.h>
+
+
 class Button
 {
 	public:
@@ -23,7 +26,7 @@ class Button
 		Button& operator=(Button right);
 
 	private:
-		uint pin = -1;
+		uint _pin = -1;
 		bool _is_pressed = false;  // whether the button is currently being pressed
 
 		// Describes whether the state change has been read/acknowledged. Bound to _last_released_date and 

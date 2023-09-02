@@ -7,6 +7,7 @@
 #include "../Headers/Global.hpp"
 
 
+#include "../Headers/Button.hpp"
 #include "../Headers/Core1.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
@@ -91,21 +92,62 @@ namespace States
 	}
 
 
+	namespace Menu
+	{
+		void alarm()
+		{}
+
+
+		void time()
+		{}
+
+
+		void date()
+		{}
+	}
+
+
 	namespace Alarm
 	{
+		uint8_t SELECTED_ALARM = 0;
+
+
 		namespace Menu
 		{
+			void alarms()
+			{}
+
+
+			void new_alarm()
+			{}
+
+
 		}
 
 
-		namespace Set
+		namespace Seletected
 		{
-			void set_hour()
+			void delete_alarm()
 			{}
 
 
-			void set_minute()
+			void edit()
 			{}
+
+
+
+
+			namespace Edit
+			{
+				void hour()
+				{}
+
+
+				void minute()
+				{}
+
+
+			}
 		}
 
 
@@ -130,6 +172,7 @@ namespace States
 					Global::State::core0_state.pop();
 					Global::State::core0_state.push(State(States::STOP_ALARM));
 					Global::State::core1_state.push(States::STOP_ALARM);
+					return;
 				}
 
 				for(uint8_t x = 0; x < Global::Inputs::buttons.size(); x++)
@@ -161,7 +204,18 @@ namespace States
 
 	namespace Time
 	{
-		void set_year()
+		void hour()
+		{}
+
+
+		void minute()
+		{}
+	}
+
+
+	namespace Date
+	{
+		void year()
 		{
 			// If 10 seconds have passed
 			if(Global::Inputs::encoder.has_changed() && Global::Inputs::encoder.last_changed() >= 600000)
@@ -171,19 +225,11 @@ namespace States
 		}
 
 
-		void set_month()
+		void month()
 		{}
 
 
-		void set_day()
-		{}
-
-
-		void set_hour()
-		{}
-
-
-		void set_minute()
+		void day()
 		{}
 	}
 }

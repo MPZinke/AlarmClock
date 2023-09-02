@@ -14,7 +14,10 @@
 #include "../Headers/Encoder.hpp"
 
 
-const int8_t Encoder::PULLS = {
+#include <Arduino.h>
+
+
+const int8_t Encoder::PULLS[4][4] = {
 	{ 0, -1,  1,  0},
 	{ 1,  0,  0, -1},
 	{-1,  0,  0,  1},
@@ -49,7 +52,7 @@ bool Encoder::has_changed()
 }
 
 
-unsigned long Encoder::last_change()
+unsigned long Encoder::last_changed()
 {
 	return _last_change;
 }
