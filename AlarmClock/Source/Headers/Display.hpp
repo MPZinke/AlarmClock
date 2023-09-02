@@ -23,11 +23,11 @@ class Display
 
 		enum Default
 		{
-			EINK_DC=4,
-			EINK_RESET=6,
+			EINK_DC=27,
+			EINK_RESET=21,
 			EINK_CS=17,
-			EINK_SRAM_CS=5,
-			EINK_BUSY=7
+			EINK_SRAM_CS=26,
+			EINK_BUSY=20
 		};
 
 		Display();
