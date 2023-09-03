@@ -34,12 +34,6 @@
 #include "Headers/States.hpp"
 
 
-void on_interrupt(uint gpio, uint32_t events)
-{
-	
-}
-
-
 void main_loop()
 {
 	loop
@@ -62,7 +56,6 @@ void main_loop()
 			Global::State::core0_state += States::START_ALARM;
 		}
 
-		Global::Inputs::encoder.update();
 		// I have elected to this switch-case as opposed to an array of functions to make the code safer
 		switch(Global::State::core0_state[-1])
 		{
@@ -165,20 +158,20 @@ int main()
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
 	// FROM: https://forums.raspberrypi.com/viewtopic.php?t=338861
-	// gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
-	// gpio_set_irq_enabled_with_callback(3, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+	gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE|GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+	gpio_set_irq_enabled_with_callback(3, GPIO_IRQ_EDGE_RISE|GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
 
 	printf("All Initialized\r\n");
 	xTaskCreate((TaskFunction_t)main_loop, "Clock", 256, NULL, 1, NULL);
-
+	// Pin the second task to the seconds core.
 	// FROM: https://github.com/ghubcoder/PicoFreertosBlink/blob/master/blink.c
 	//  VIA: https://ghubcoder.github.io/posts/using-multiple-cores-pico-freertos/
 	//  AND: https://embeddedcomputing.com/technology/open-source/linux-freertos-related/using-freertos-with-the-raspberry-pi-pico-part-4
 	TaskHandle_t display_handle;
 	UBaseType_t uxCoreAffinityMask;
 	xTaskCreate((TaskFunction_t)Core1::main, "Display", 256, NULL, 1, &display_handle);
-	uxCoreAffinityMask = 1 << 1;  // Force to run on core1. To force to run on core0: uxCoreAffinityMask = 1 << 0;
-	vTaskCoreAffinitySet(display_handle, uxCoreAffinityMask);
+	// Force to run on core1. To force to run on core0: uxCoreAffinityMask = 1 << 0;
+	vTaskCoreAffinitySet(display_handle, (UBaseType_t)(/* uxCoreAffinityMask = */1 << 1));
 
 	vTaskStartScheduler();
 

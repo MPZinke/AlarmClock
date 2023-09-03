@@ -61,19 +61,16 @@ unsigned long Encoder::last_changed()
 }
 
 
-void Encoder::update()
+void Encoder::update(uint pin, uint32_t events)
 {
-	uint8_t A_pull = (uint8_t)gpio_get(_A_pin);
-	uint8_t B_pull = (uint8_t)gpio_get(_B_pin);
-	uint8_t new_pull = A_pull << A | B_pull << B;
+	using namespace Global::Inputs;
+	uint8_t new_pull = ((uint8_t)gpio_get(encoder._A_pin) << A) | ((uint8_t)gpio_get(encoder._B_pin) << B);
+	encoder._change += PULLS[encoder._pull][new_pull];
+	encoder._pull = new_pull;
 
-	int8_t change = PULLS[_pull][new_pull];
-	_change += change;
-	_pull = new_pull;
-
-	if((_change <= -2 || 2 <= _change) && change != 0)
+	if(encoder._change <= -2 || 2 <= encoder._change)
 	{
-		_acknowledged = false;
-		_last_changed = millis();
+		encoder._acknowledged = false;
+		encoder._last_changed = millis();
 	}
 }

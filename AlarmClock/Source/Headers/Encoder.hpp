@@ -16,7 +16,7 @@ class Encoder
 		int16_t change();
 		bool has_changed();
 		unsigned long last_changed();
-		void update();
+		static void update(uint pin, uint32_t events);
 
 	private:
 		enum Bit
