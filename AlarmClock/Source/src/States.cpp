@@ -53,11 +53,11 @@ namespace States
 				adjust_audio();
 			}
 
-			// // If menu button has been pressed
-			// if(Global::Inputs::buttons[Button::MENU].has_changed())
-			// {
-			// 	set_menu();
-			// }
+			// If menu button has been pressed
+			if(Global::Inputs::buttons[Button::CENTER].has_changed())
+			{
+				set_menu();
+			}
 		}
 
 
@@ -65,21 +65,21 @@ namespace States
 		{
 			using namespace Global::Audio;
 			// Get change from encoder
-			Global::Audio::volume += Global::Inputs::encoder.change();
+			volume += Global::Inputs::encoder.change();
 
-			if(Global::Audio::volume < 0)
+			if(volume < 0)
 			{
-				Global::Audio::volume = 0;
+				volume = 0;
 			}
-			else if(30 < Global::Audio::volume)
+			else if(30 < volume)
 			{
-				Global::Audio::volume = 30;
+				volume = 30;
 			}
 
-			Global::Audio::player.setVolume(Global::Audio::volume);
-			if(Global::Audio::player.getStatus().state != DfMp3_StatusState_Playing)
+			player.setVolume(volume);
+			if(player.getStatus().state != DfMp3_StatusState_Playing)
 			{
-				Global::Audio::player.playFolderTrack(1, Audio::Tracks::DROP);
+				player.playFolderTrack(1, Audio::Tracks::DROP);
 			}
 
 			Global::Inputs::encoder.acknowledge();
@@ -89,8 +89,8 @@ namespace States
 
 		void set_menu()
 		{
-			Global::State::core0_state.push(State(States::MENU_ALARM));
-			Global::State::core1_state.push(States::MENU_ALARM);
+			Global::State::core0_state.push(State(States::Menu::ALARM));
+			Global::State::core1_state.push(States::Menu::ALARM);
 
 			Global::Inputs::encoder.acknowledge();
 			Global::Inputs::buttons.lambda(Button::static_acknowledge);
@@ -101,15 +101,148 @@ namespace States
 	namespace Menu
 	{
 		void alarm()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(buttons[Button::LEFT].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(State(States::HOME));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Alarm::Menu::ALARMS));
+				core1_state.push(State(States::Alarm::Menu::ALARMS));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::DOWN].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Menu::TIME));
+				core1_state.push(State(States::Menu::TIME));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].start_time() >= 10000)
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(States::HOME);
+				return;
+			}
+		}
 
 
 		void time()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(buttons[Button::LEFT].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(State(States::HOME));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::UP].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Menu::ALARM));
+				core1_state.push(State(States::Menu::ALARM));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Time::HOUR));
+				core1_state.push(State(States::Time::HOUR));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::DOWN].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Menu::DATE));
+				core1_state.push(State(States::Menu::DATE));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].start_time() >= 10000)
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(States::HOME);
+				return;
+			}
+		}
 
 
 		void date()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(buttons[Button::LEFT].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(State(States::HOME));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::UP].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Menu::ALARM));
+				core1_state.push(State(States::Menu::ALARM));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state.pop();
+				core0_state.push(State(States::Date::YEAR));
+				core1_state.push(State(States::Date::YEAR));
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].start_time() >= 10000)
+			{
+				core0_state.pop();
+				core0_state.push(State(States::HOME));
+				core1_state.push(States::HOME);
+				return;
+			}
+		}
 	}
 
 
@@ -139,8 +272,6 @@ namespace States
 
 			void edit()
 			{}
-
-
 
 
 			namespace Edit
@@ -173,23 +304,26 @@ namespace States
 
 			void playing_alarm()
 			{
+				using namespace Global::Inputs;
+				using namespace Global::State;
+
 				if(millis() - Global::Audio::start >= 300000)
 				{
-					Global::State::core0_state.pop();
-					Global::State::core0_state.push(State(States::STOP_ALARM));
-					Global::State::core1_state.push(States::STOP_ALARM);
+					core0_state.pop();
+					core0_state.push(State(States::Alarm::Alarm::STOP));
+					core1_state.push(States::Alarm::Alarm::STOP);
 					return;
 				}
 
 				for(uint8_t x = 0; x < Global::Inputs::buttons.size(); x++)
 				{
-					if(Global::Inputs::buttons[x].has_changed() && Global::State::core0_state[-1] != States::STOP_ALARM)
+					if(buttons[x].has_changed() && core0_state[-1] != States::Alarm::Alarm::STOP)
 					{
-						Global::State::core0_state.pop();
-						Global::State::core0_state.push(State(States::STOP_ALARM));
-						Global::State::core1_state.push(States::STOP_ALARM);
+						core0_state.pop();
+						core0_state.push(State(States::Alarm::Alarm::STOP));
+						core1_state.push(States::Alarm::Alarm::STOP);
 
-						Global::Inputs::buttons.lambda(Button::static_acknowledge);
+						buttons.lambda(Button::static_acknowledge);
 
 						return;
 					}

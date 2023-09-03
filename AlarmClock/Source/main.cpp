@@ -100,7 +100,7 @@ void main_loop()
 				States::Alarm::Seletected::edit();
 				break;
 			}
-			case States::Alarm::Seletected::DELETE_ALARM:
+			case States::Alarm::Seletected::DELETE:
 			{
 				States::Alarm::Seletected::delete_alarm();
 				break;
@@ -117,17 +117,17 @@ void main_loop()
 			}
 
 			// ———— ALARM::ALARM ———— //
-			case States::Alarm::Alarm::START_ALARM:
+			case States::Alarm::Alarm::START:
 			{
 				States::Alarm::Alarm::start_alarm();
 				break;
 			}
-			case States::Alarm::Alarm::PLAYING_ALARM:
+			case States::Alarm::Alarm::PLAYING:
 			{
 				States::Alarm::Alarm::playing_alarm();
 				break;
 			}
-			case States::Alarm::Alarm::STOP_ALARM:
+			case States::Alarm::Alarm::STOP:
 			{
 				States::Alarm::Alarm::stop_alarm();
 				break;

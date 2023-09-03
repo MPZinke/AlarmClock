@@ -37,8 +37,8 @@ namespace Global
 
 	namespace Inputs
 	{
-		StaticList<5, Button> buttons(Button(0), Button(1), Button(2), Button(3), Button(4));
-		Encoder encoder(2, 3);
+		StaticList<5, Button> buttons(Button(13), Button(12), Button(11), Button(10), Button(9));
+		Encoder encoder(14, 15);
 	}
 
 	namespace Time

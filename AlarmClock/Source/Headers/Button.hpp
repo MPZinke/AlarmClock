@@ -8,11 +8,11 @@ class Button
 	public:
 		enum ButtonListIndexMapping
 		{
-			MENU,
-			TOP,
+			CENTER,
+			LEFT,
+			UP,
 			RIGHT,
-			BOTTOM,
-			LEFT
+			DOWN,
 		};
 
 		Button();

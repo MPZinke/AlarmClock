@@ -100,7 +100,7 @@ namespace States
 			enum
 			{
 				EDIT=ALARM_SELECTED_EDIT,
-				DELETE_ALARM=ALARM_SELECTED_DELETE
+				DELETE=ALARM_SELECTED_DELETE
 			};
 
 
@@ -127,9 +127,9 @@ namespace States
 		{
 			enum
 			{
-				START_ALARM=States::START_ALARM,
-				PLAYING_ALARM=States::PLAYING_ALARM,
-				STOP_ALARM=States::STOP_ALARM,
+				START=States::START_ALARM,
+				PLAYING=States::PLAYING_ALARM,
+				STOP=States::STOP_ALARM,
 			};
 
 
