@@ -12,6 +12,7 @@
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/Encoder.hpp"
+#include "../Headers/StaticList.hpp"
 #include "../Headers/Time.hpp"
 
 
@@ -47,21 +48,22 @@ namespace States
 
 			// Check if the encoder has been changed
 			Encoder& encoder = Global::Inputs::encoder;
-			if(encoder.has_changed() && current_timestamp - encoder.last_changed() > 500)
+			if(encoder.has_changed())
 			{
 				adjust_audio();
 			}
 
-			// If menu button has been pressed
-			if(Global::Inputs::buttons[Button::MENU].has_changed())
-			{
-				set_menu();
-			}
+			// // If menu button has been pressed
+			// if(Global::Inputs::buttons[Button::MENU].has_changed())
+			// {
+			// 	set_menu();
+			// }
 		}
 
 
 		void adjust_audio()
 		{
+			using namespace Global::Audio;
 			// Get change from encoder
 			Global::Audio::volume += Global::Inputs::encoder.change();
 
@@ -75,6 +77,10 @@ namespace States
 			}
 
 			Global::Audio::player.setVolume(Global::Audio::volume);
+			if(Global::Audio::player.getStatus().state != DfMp3_StatusState_Playing)
+			{
+				Global::Audio::player.playFolderTrack(1, Audio::Tracks::DROP);
+			}
 
 			Global::Inputs::encoder.acknowledge();
 			Global::Inputs::buttons.lambda(Button::static_acknowledge);

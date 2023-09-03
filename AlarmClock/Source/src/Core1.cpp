@@ -9,6 +9,7 @@
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/States.hpp"
+#include "../Headers/StaticList.hpp"
 
 
 namespace Core1

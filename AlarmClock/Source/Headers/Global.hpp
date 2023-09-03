@@ -3,19 +3,20 @@
 #pragma once
 
 
-#include "Alarm.hpp"
 #include "Audio.hpp"
-#include "StaticList.hpp"
 #include "States.hpp"
 
 
 #define loop while(true)
 
 
+class Alarm;
 class Button;
 class Datetime;
 class Display;
 class Encoder;
+template<size_t S, class T>
+class StaticList;
 
 
 // ::Global::Audio::DFPlayer type set in Audio.hpp as to avoid circular importing

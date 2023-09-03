@@ -24,17 +24,19 @@
 #include "Headers/Global.hpp"
 
 
+#include "Headers/Alarm.hpp"
 #include "Headers/Audio.hpp"
 #include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
 #include "Headers/Display.hpp"
+#include "Headers/Encoder.hpp"
 #include "Headers/StaticList.hpp"
 #include "Headers/States.hpp"
 
 
 void on_interrupt(uint gpio, uint32_t events)
 {
-	printf("It was activated\r\n");
+	
 }
 
 
@@ -60,6 +62,7 @@ void main_loop()
 			Global::State::core0_state += States::START_ALARM;
 		}
 
+		Global::Inputs::encoder.update();
 		// I have elected to this switch-case as opposed to an array of functions to make the code safer
 		switch(Global::State::core0_state[-1])
 		{
@@ -137,8 +140,6 @@ void main_loop()
 				break;
 			}
 		}
-
-		sleep_ms(50);
 	}
 }
 
@@ -164,7 +165,9 @@ int main()
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
 	// FROM: https://forums.raspberrypi.com/viewtopic.php?t=338861
-	gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, on_interrupt);
+	// gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+	// gpio_set_irq_enabled_with_callback(3, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+
 	printf("All Initialized\r\n");
 	xTaskCreate((TaskFunction_t)main_loop, "Clock", 256, NULL, 1, NULL);
 

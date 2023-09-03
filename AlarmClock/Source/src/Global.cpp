@@ -4,6 +4,7 @@
 #include "../Headers/Global.hpp"
 
 
+#include "../Headers/Alarm.hpp"
 #include "../Headers/Button.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"

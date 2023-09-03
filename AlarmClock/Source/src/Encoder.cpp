@@ -17,6 +17,9 @@
 #include <Arduino.h>
 
 
+#include "../Headers/Global.hpp"
+
+
 const int8_t Encoder::PULLS[4][4] = {
 	{ 0, -1,  1,  0},
 	{ 1,  0,  0, -1},
@@ -54,16 +57,23 @@ bool Encoder::has_changed()
 
 unsigned long Encoder::last_changed()
 {
-	return _last_change;
+	return _last_changed;
 }
 
 
-void Encoder::update(uint pin, uint32_t events)
+void Encoder::update()
 {
-	_acknowledged = false;
-	_last_change = millis();
+	uint8_t A_pull = (uint8_t)gpio_get(_A_pin);
+	uint8_t B_pull = (uint8_t)gpio_get(_B_pin);
+	uint8_t new_pull = A_pull << A | B_pull << B;
 
-	uint8_t new_pull = (uint8_t)gpio_is_pulled_down(_A_pin) << A | (uint8_t)gpio_is_pulled_down(_A_pin) << B;
-	_change += PULLS[_pull][new_pull];
+	int8_t change = PULLS[_pull][new_pull];
+	_change += change;
 	_pull = new_pull;
+
+	if((_change <= -2 || 2 <= _change) && change != 0)
+	{
+		_acknowledged = false;
+		_last_changed = millis();
+	}
 }

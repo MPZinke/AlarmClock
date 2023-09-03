@@ -1,5 +1,8 @@
 
 
+#pragma once
+
+
 #include <pico/stdlib.h>
 #include <stdint.h>
 
@@ -13,13 +16,13 @@ class Encoder
 		int16_t change();
 		bool has_changed();
 		unsigned long last_changed();
-		void update(uint pin, uint32_t events);
+		void update();
 
 	private:
 		enum Bit
 		{
-			A = 0,
-			B
+			A = 1,
+			B = 0
 		};
 
 		static const int8_t PULLS[4][4];
@@ -30,6 +33,6 @@ class Encoder
 
 		bool _acknowledged = true;
 		int16_t _change = 0;  // Position change since last acknowledge
-		unsigned long _last_change;
+		unsigned long _last_changed;
 		uint8_t _pull;  // 0b000000BA
 };
