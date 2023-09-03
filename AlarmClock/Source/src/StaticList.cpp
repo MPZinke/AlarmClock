@@ -7,6 +7,7 @@
 
 
 #include "../Headers/Alarm.hpp"
+#include "../Headers/Button.hpp"
 #include "../Headers/States.hpp"
 
 
@@ -22,6 +23,27 @@ class StaticList
 		{
 			_values[0] = start_value;
 			_size = 1;
+		}
+
+		StaticList(T start_value0, T start_value1, ...)
+		{
+			_values[0] = start_value0;
+			_values[1] = start_value1;
+			for(uint x = 2; x < S; x++)
+			{
+				va_list variable_list;
+				va_start(variable_list, "");
+				T temp = va_arg(variable_list, T);
+				_values[x] = temp;
+			}
+		}
+
+		void lambda(void(*function)(T& value))
+		{
+			for(uint32_t x = 0; x < _size; x++)
+			{
+				function(_values[x]);
+			}
 		}
 
 		size_t max()
@@ -42,6 +64,16 @@ class StaticList
 
 			_size--;
 			return _values[_size];
+		}
+
+		void push(T value)
+		{
+			// Keep it safe and only add a value if there is room
+			if(_size != S)
+			{
+				_values[_size] = value;
+				_size++;
+			}
 		}
 
 		bool remove(int index)
@@ -74,13 +106,7 @@ class StaticList
 
 		StaticList& operator+=(T value)
 		{
-			// Keep it safe and only add a value if there is room
-			if(_size != S)
-			{
-				_values[_size] = value;
-				_size++;
-			}
-
+			push(value);
 			return *this;
 		}
 
@@ -127,4 +153,5 @@ class StaticList
 
 
 template class StaticList<10, Alarm>;
+template class StaticList<5, Button>;
 template class StaticList<3, States::State>;

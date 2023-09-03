@@ -24,32 +24,14 @@
 #include "Headers/Global.hpp"
 
 
+#include "Headers/Alarm.hpp"
 #include "Headers/Audio.hpp"
 #include "Headers/Core1.hpp"
 #include "Headers/Datetime.hpp"
 #include "Headers/Display.hpp"
+#include "Headers/Encoder.hpp"
 #include "Headers/StaticList.hpp"
 #include "Headers/States.hpp"
-
-
-class Notifier;
-
-
-typedef DFMiniMp3<HardwareSerial, Notifier> DFPlayer;
-
-
-class Notifier
-{
-	public:
-		static void PrintlnSourceAction(DfMp3_PlaySources source, const char* action){}
-		static void OnError([[maybe_unused]] DFPlayer& mp3, uint16_t errorCode){}
-		static void OnPlayFinished([[maybe_unused]] DFPlayer& mp3, [[maybe_unused]] DfMp3_PlaySources source,
-			uint16_t track
-		){}
-		static void OnPlaySourceOnline([[maybe_unused]] DFPlayer& mp3, DfMp3_PlaySources source){}
-		static void OnPlaySourceInserted([[maybe_unused]] DFPlayer& mp3, DfMp3_PlaySources source){}
-		static void OnPlaySourceRemoved([[maybe_unused]] DFPlayer& mp3, DfMp3_PlaySources source){}
-};
 
 
 void main_loop()
@@ -71,55 +53,86 @@ void main_loop()
 
 		if(Global::Time::alarms.size() && (Time&)Global::Time::datetime == Global::Time::alarms[0])
 		{
-			Global::core0_state += States::START_ALARM;
+			Global::State::core0_state += States::START_ALARM;
 		}
 
 		// I have elected to this switch-case as opposed to an array of functions to make the code safer
-		switch(Global::core0_state.peek())
+		switch(Global::State::core0_state[-1])
 		{
 			case States::HOME:
 			{
-				States::display_time();
+				States::Home::main();
 				break;
 			}
-			case States::SETTING_DATETIME_HOUR:
+
+			// ———— MAIN MENU ———— //
+			case States::Menu::ALARM:
 			{
-				States::set_time_hour();
+				States::Menu::alarm();
 				break;
 			}
-			case States::SETTING_DATETIME_MINUTE:
+			case States::Menu::TIME:
 			{
-				States::set_time_minute();
+				States::Menu::time();
 				break;
 			}
-			case States::SETTING_ALARM_HOUR:
+			case States::Menu::DATE:
 			{
-				States::set_alarm_hour();
+				States::Menu::date();
 				break;
 			}
-			case States::SETTING_ALARM_MINUTE:
+
+			// ———— ALARM ———— //
+			case States::Alarm::Menu::ALARMS:
 			{
-				States::set_alarm_minute();
+				States::Alarm::Menu::alarms();
 				break;
 			}
-			case States::START_ALARM:
+			case States::Alarm::Menu::NEW:
 			{
-				States::start_alarm();
+				States::Alarm::Menu::new_alarm();
 				break;
 			}
-			case States::PLAYING_ALARM:
+
+			// ———— ALARM::SELECTED ———— //
+			case States::Alarm::Seletected::EDIT:
 			{
-				States::playing_alarm();
+				States::Alarm::Seletected::edit();
 				break;
 			}
-			case States::STOP_ALARM:
+			case States::Alarm::Seletected::DELETE_ALARM:
 			{
-				States::stop_alarm();
+				States::Alarm::Seletected::delete_alarm();
+				break;
+			}
+			case States::Alarm::Seletected::Edit::HOUR:
+			{
+				States::Alarm::Seletected::Edit::hour();
+				break;
+			}
+			case States::Alarm::Seletected::Edit::MINUTE:
+			{
+				States::Alarm::Seletected::Edit::minute();
+				break;
+			}
+
+			// ———— ALARM::ALARM ———— //
+			case States::Alarm::Alarm::START_ALARM:
+			{
+				States::Alarm::Alarm::start_alarm();
+				break;
+			}
+			case States::Alarm::Alarm::PLAYING_ALARM:
+			{
+				States::Alarm::Alarm::playing_alarm();
+				break;
+			}
+			case States::Alarm::Alarm::STOP_ALARM:
+			{
+				States::Alarm::Alarm::stop_alarm();
 				break;
 			}
 		}
-
-		sleep_ms(50);
 	}
 }
 
@@ -144,17 +157,21 @@ int main()
 
 	Global::Audio::player.playFolderTrack(1, Audio::Tracks::START_UP);
 
+	// FROM: https://forums.raspberrypi.com/viewtopic.php?t=338861
+	gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE|GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+	gpio_set_irq_enabled_with_callback(3, GPIO_IRQ_EDGE_RISE|GPIO_IRQ_EDGE_FALL, true, Global::Inputs::encoder.update);
+
 	printf("All Initialized\r\n");
 	xTaskCreate((TaskFunction_t)main_loop, "Clock", 256, NULL, 1, NULL);
-
+	// Pin the second task to the seconds core.
 	// FROM: https://github.com/ghubcoder/PicoFreertosBlink/blob/master/blink.c
 	//  VIA: https://ghubcoder.github.io/posts/using-multiple-cores-pico-freertos/
 	//  AND: https://embeddedcomputing.com/technology/open-source/linux-freertos-related/using-freertos-with-the-raspberry-pi-pico-part-4
 	TaskHandle_t display_handle;
 	UBaseType_t uxCoreAffinityMask;
 	xTaskCreate((TaskFunction_t)Core1::main, "Display", 256, NULL, 1, &display_handle);
-	uxCoreAffinityMask = 1 << 1;  // Force to run on core1. To force to run on core0: uxCoreAffinityMask = 1 << 0;
-	vTaskCoreAffinitySet(display_handle, uxCoreAffinityMask);
+	// Force to run on core1. To force to run on core0: uxCoreAffinityMask = 1 << 0;
+	vTaskCoreAffinitySet(display_handle, (UBaseType_t)(/* uxCoreAffinityMask = */1 << 1));
 
 	vTaskStartScheduler();
 

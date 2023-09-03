@@ -31,6 +31,7 @@ namespace Audio
 		{
 			START_UP = 1,
 			CLICK,
+			DROP,
 			ALARM,
 		};
 	}

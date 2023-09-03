@@ -4,28 +4,41 @@
 #include "../Headers/Global.hpp"
 
 
+#include "../Headers/Alarm.hpp"
+#include "../Headers/Button.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
+#include "../Headers/Encoder.hpp"
 #include "../Headers/StaticList.hpp"
 #include "../Headers/Time.hpp"
 
 
 namespace Global
 {
-	StaticList<3, States::State> core0_state(States::HOME);
-	StaticList<3, States::State> core1_state(States::HOME);
+	namespace State
+	{
+		StaticList<3, States::State> core0_state(States::HOME);
+		StaticList<3, States::State> core1_state(States::HOME);
+	}
 
 	namespace Audio
 	{
 		SerialUART& serial = Serial1;
 		DFPlayer player(Global::Audio::serial);
-		uint8_t volume = 5;
+		unsigned long start;
+		int16_t volume = 5;
 	}
 
 	namespace BlinkingLight
 	{
 		unsigned long last_switch;
 		bool state;
+	}
+
+	namespace Inputs
+	{
+		StaticList<5, Button> buttons(Button(0), Button(1), Button(2), Button(3), Button(4));
+		Encoder encoder(2, 3);
 	}
 
 	namespace Time

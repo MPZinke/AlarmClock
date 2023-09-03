@@ -9,6 +9,7 @@
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/States.hpp"
+#include "../Headers/StaticList.hpp"
 
 
 namespace Core1
@@ -17,14 +18,10 @@ namespace Core1
 	{
 		loop
 		{
-			if(Global::core1_state.peek() == States::HOME)
+			if(Global::State::core1_state[-1] == States::HOME)
 			{
-				printf("Core1::displaying time\r\n");
+				// printf("Core1::displaying time\r\n");
 				display_time();
-			}
-			else
-			{
-				printf("Core1::not displaying time\r\n");
 			}
 
 			sleep_ms(50);
@@ -41,14 +38,12 @@ namespace Core1
 		  && (Date&)Global::display == (Date&)Global::Time::datetime
 		)
 		{
-			printf("Core1::not update time\r\n");
 			return;
 		}
 
 		Global::display = (Date&)Global::Time::datetime;
 		Global::display = (Time&)Global::Time::datetime;
 
-		printf("Core1::update time\r\n");
 		Global::display.update();
 	}
 }

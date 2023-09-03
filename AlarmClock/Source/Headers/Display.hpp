@@ -23,11 +23,11 @@ class Display
 
 		enum Default
 		{
-			EINK_DC=4,
-			EINK_RESET=6,
+			EINK_DC=27,
+			EINK_RESET=21,
 			EINK_CS=17,
-			EINK_SRAM_CS=5,
-			EINK_BUSY=7
+			EINK_SRAM_CS=26,
+			EINK_BUSY=20
 		};
 
 		Display();
@@ -47,6 +47,8 @@ class Display
 	private:
 		Date _date;
 		ThinkInk_154_Mono_D67 _eInk;
+		Date _last_update_date;  // Used to prevent refreshing too frequently
+		unsigned long _last_update_timestamp;  // Used to prevent refreshing too frequently
 		Time _time;
 
 		void print_date();

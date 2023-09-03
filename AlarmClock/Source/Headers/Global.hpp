@@ -3,17 +3,20 @@
 #pragma once
 
 
-#include "Alarm.hpp"
 #include "Audio.hpp"
-#include "StaticList.hpp"
 #include "States.hpp"
 
 
 #define loop while(true)
 
 
+class Alarm;
+class Button;
 class Datetime;
 class Display;
+class Encoder;
+template<size_t S, class T>
+class StaticList;
 
 
 // ::Global::Audio::DFPlayer type set in Audio.hpp as to avoid circular importing
@@ -21,20 +24,30 @@ class Display;
 
 namespace Global
 {
-	extern StaticList<3, States::State> core0_state;
-	extern StaticList<3, States::State> core1_state;
+	namespace State
+	{
+		extern StaticList<3, States::State> core0_state;
+		extern StaticList<3, States::State> core1_state;
+	}
 
 	namespace Audio
 	{
 		extern DFPlayer player;
 		extern SerialUART& serial;
-		extern uint8_t volume;
+		extern unsigned long start;
+		extern int16_t volume;
 	}
 
 	namespace BlinkingLight
 	{
 		extern unsigned long last_switch;
 		extern bool state;
+	}
+
+	namespace Inputs
+	{
+		extern StaticList<5, Button> buttons;
+		extern Encoder encoder;
 	}
 
 	namespace Time
