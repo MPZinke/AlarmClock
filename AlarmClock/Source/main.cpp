@@ -53,86 +53,10 @@ void main_loop()
 
 		if(Global::Time::alarms.size() && (Time&)Global::Time::datetime == Global::Time::alarms[0])
 		{
-			Global::State::core0_state += States::START_ALARM;
+			Global::State::core0_state += States::Alarm::Alarm::start;
 		}
 
-		// I have elected to this switch-case as opposed to an array of functions to make the code safer
-		switch(Global::State::core0_state[-1])
-		{
-			case States::HOME:
-			{
-				States::Home::main();
-				break;
-			}
-
-			// ———— MAIN MENU ———— //
-			case States::Menu::ALARM:
-			{
-				States::Menu::alarm();
-				break;
-			}
-			case States::Menu::TIME:
-			{
-				States::Menu::time();
-				break;
-			}
-			case States::Menu::DATE:
-			{
-				States::Menu::date();
-				break;
-			}
-
-			// ———— ALARM ———— //
-			case States::Alarm::Menu::ALARMS:
-			{
-				States::Alarm::Menu::alarms();
-				break;
-			}
-			case States::Alarm::Menu::NEW:
-			{
-				States::Alarm::Menu::new_alarm();
-				break;
-			}
-
-			// ———— ALARM::SELECTED ———— //
-			case States::Alarm::Seletected::EDIT:
-			{
-				States::Alarm::Seletected::edit();
-				break;
-			}
-			case States::Alarm::Seletected::DELETE:
-			{
-				States::Alarm::Seletected::delete_alarm();
-				break;
-			}
-			case States::Alarm::Seletected::Edit::HOUR:
-			{
-				States::Alarm::Seletected::Edit::hour();
-				break;
-			}
-			case States::Alarm::Seletected::Edit::MINUTE:
-			{
-				States::Alarm::Seletected::Edit::minute();
-				break;
-			}
-
-			// ———— ALARM::ALARM ———— //
-			case States::Alarm::Alarm::START:
-			{
-				States::Alarm::Alarm::start_alarm();
-				break;
-			}
-			case States::Alarm::Alarm::PLAYING:
-			{
-				States::Alarm::Alarm::playing_alarm();
-				break;
-			}
-			case States::Alarm::Alarm::STOP:
-			{
-				States::Alarm::Alarm::stop_alarm();
-				break;
-			}
-		}
+		Global::State::core0_state[-1]();
 	}
 }
 

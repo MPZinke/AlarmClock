@@ -18,11 +18,7 @@ namespace Core1
 	{
 		loop
 		{
-			if(Global::State::core1_state[-1] == States::HOME)
-			{
-				// printf("Core1::displaying time\r\n");
-				display_time();
-			}
+			Global::State::core1_state[-1]();
 
 			sleep_ms(50);
 		}

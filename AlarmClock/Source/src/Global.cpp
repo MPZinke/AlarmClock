@@ -6,6 +6,7 @@
 
 #include "../Headers/Alarm.hpp"
 #include "../Headers/Button.hpp"
+#include "../Headers/Core1.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/Encoder.hpp"
@@ -17,8 +18,8 @@ namespace Global
 {
 	namespace State
 	{
-		StaticList<3, States::State> core0_state(States::HOME);
-		StaticList<3, States::State> core1_state(States::HOME);
+		StaticList<3, States::State> core0_state(States::State(States::Home::main));
+		StaticList<3, States::State> core1_state(Core1::display_time);
 	}
 
 	namespace Audio

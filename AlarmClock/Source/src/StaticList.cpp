@@ -78,7 +78,7 @@ class StaticList
 
 		bool remove(int index)
 		{
-			if(index < 0)
+			while(index < 0)
 			{
 				index = _size + index;  // EG. `index = 7 + -1;`
 			}
@@ -112,7 +112,7 @@ class StaticList
 
 		T operator[](int index) const  // Getter
 		{
-			if(index < 0)
+			while(index < 0)
 			{
 				index = _size + index;  // EG. `index = 7 + -1;`
 			}
@@ -124,7 +124,7 @@ class StaticList
 
 		T& operator[](int index)  // Setter
 		{
-			if(index < 0)
+			while(index < 0)
 			{
 				index = _size + index;  // EG. `index = 7 + -1;`
 			}
