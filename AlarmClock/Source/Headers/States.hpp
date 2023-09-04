@@ -14,12 +14,10 @@ namespace States
 			State();  // For StaticList
 			State(void(*state)());
 
-			unsigned long start_time();
-			void start_time(unsigned long timestamp);
+			unsigned long last_updated();
+			void last_updated(unsigned long timestamp);
 
 			void operator()();
-
-			(*operator void() const)();  // FROM: https://stackoverflow.com/a/6755760
 
 			State& operator=(State right);
 			State& operator=(void(*right)());
@@ -33,7 +31,7 @@ namespace States
 
 		private:
 			void(*_state)();
-			unsigned long _start_time;
+			unsigned long _last_updated;
 	};
 
 
@@ -65,10 +63,10 @@ namespace States
 		}
 
 
-		namespace Seletected
+		namespace Selected
 		{
-			void delete_alarm();
 			void edit();
+			void delete_alarm();
 
 
 			namespace Edit

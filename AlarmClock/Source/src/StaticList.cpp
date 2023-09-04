@@ -32,7 +32,7 @@ class StaticList
 			for(uint x = 2; x < S; x++)
 			{
 				va_list variable_list;
-				va_start(variable_list, "");
+				va_start(variable_list, start_value1);
 				T temp = va_arg(variable_list, T);
 				_values[x] = temp;
 			}
@@ -58,12 +58,13 @@ class StaticList
 			return _values[_size-1];
 		}
 
-		T pop()
+		T pop(size_t amount/* =1 */)
 		{
-			assert(_size != 0);
+			assert(_size >= amount);
 
-			_size--;
-			return _values[_size];
+			size_t previous_size = _size;
+			_size -= amount;
+			return _values[previous_size];
 		}
 
 		void push(T value)

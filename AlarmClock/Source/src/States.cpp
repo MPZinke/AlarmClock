@@ -7,6 +7,7 @@
 #include "../Headers/Global.hpp"
 
 
+#include "../Headers/Alarm.hpp"
 #include "../Headers/Button.hpp"
 #include "../Headers/Core1.hpp"
 #include "../Headers/Datetime.hpp"
@@ -24,35 +25,30 @@ namespace States
 
 
 	State::State(void(*state)())
-	: _state{state}, _start_time{millis()}
+	: _state{state}, _last_updated{millis()}
 	{}
 
-	unsigned long State::start_time()
+	unsigned long State::last_updated()
 	{
-		return _start_time;
+		return _last_updated;
 	}
 
-	void State::start_time(unsigned long timestamp)
+	void State::last_updated(unsigned long timestamp)
 	{
-		_start_time = timestamp;
+		_last_updated = timestamp;
 	}
 
 	void State::operator()()
 	{
-		_state();
-	}
-
-	(*State::operator void() const)()
-	{
 		assert(_state != nullptr);
 
-		return _state;
+		_state();
 	}
 
 	State& State::operator=(State right)
 	{
 		_state = right._state;
-		_start_time = right._start_time;
+		_last_updated = right._last_updated;
 
 		return *this;
 	}
@@ -60,7 +56,7 @@ namespace States
 	State& State::operator=(void(*right_state)())
 	{
 		_state = right_state;
-		_start_time = millis();
+		_last_updated = millis();
 
 		return *this;
 	}
@@ -90,28 +86,34 @@ namespace States
 	{
 		void main()
 		{
+			using namespace Global::Inputs;
+
 			unsigned long current_timestamp = millis();
 
 			// Check if the encoder has been changed
-			Encoder& encoder = Global::Inputs::encoder;
 			if(encoder.has_changed())
 			{
 				adjust_audio();
 			}
 
 			// If menu button has been pressed
-			if(Global::Inputs::buttons[Button::CENTER].has_changed())
+			if(buttons[Button::CENTER].has_changed())
 			{
-				set_menu();
+				Global::State::core0_state.push(States::Menu::alarm);
 			}
+
+			Global::Inputs::encoder.acknowledge();
+			Global::Inputs::buttons.lambda(Button::static_acknowledge);
 		}
 
 
 		void adjust_audio()
 		{
 			using namespace Global::Audio;
+			using namespace Global::Inputs;
+
 			// Get change from encoder
-			volume += Global::Inputs::encoder.change();
+			volume += encoder.change();
 
 			if(volume < 0)
 			{
@@ -127,18 +129,6 @@ namespace States
 			{
 				player.playFolderTrack(1, Audio::Tracks::DROP);
 			}
-
-			Global::Inputs::encoder.acknowledge();
-			Global::Inputs::buttons.lambda(Button::static_acknowledge);
-		}
-
-
-		void set_menu()
-		{
-			Global::State::core0_state[-1] = State(States::Menu::alarm);
-
-			Global::Inputs::encoder.acknowledge();
-			Global::Inputs::buttons.lambda(Button::static_acknowledge);
 		}
 	}
 
@@ -152,32 +142,27 @@ namespace States
 
 			if(buttons[Button::LEFT].has_changed())
 			{
-				core0_state[-1] = States::Home::main;
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.pop();  // Home | Menu[Alarm]
 			}
 
 			else if(buttons[Button::CENTER].has_changed())
 			{
-				core0_state[-1] = State(States::Alarm::Menu::alarms);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.push(States::Alarm::Menu::alarms);
+				Alarm::SELECTED_ALARM = 0;
 			}
 
 			else if(buttons[Button::DOWN].has_changed())
 			{
-				core0_state[-1] = State(States::Menu::time);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state[-1] = States::Menu::time;
 			}
 
-			else if(millis() - core0_state[-1].start_time() >= 10000)
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
 			{
-				core0_state[-1] = States::Home::main;
+				core0_state.pop();  // Home | Menu[Alarm]
 			}
+
+			buttons.lambda(Button::static_acknowledge);
+			encoder.acknowledge();
 		}
 
 
@@ -188,39 +173,28 @@ namespace States
 
 			if(buttons[Button::LEFT].has_changed())
 			{
-				core0_state[-1] = States::Home::main;
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.pop();
+				core0_state[-1].last_updated(millis());
 			}
 
 			else if(buttons[Button::UP].has_changed())
 			{
-				core0_state[-1] = State(States::Menu::alarm);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state[-1] = States::Menu::alarm;
 			}
 
 			else if(buttons[Button::CENTER].has_changed())
 			{
-				core0_state[-1] = State(States::Time::hour);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.push(States::Time::hour);
 			}
 
 			else if(buttons[Button::DOWN].has_changed())
 			{
-				core0_state[-1] = State(States::Menu::date);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state[-1] = States::Menu::date;
 			}
 
-			else if(millis() - core0_state[-1].start_time() >= 10000)
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
 			{
-				core0_state[-1] = States::Home::main;
+				core0_state.pop();  // Home | Menu[Time]
 			}
 		}
 
@@ -232,33 +206,27 @@ namespace States
 
 			if(buttons[Button::LEFT].has_changed())
 			{
-				core0_state[-1] = States::Home::main;
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.pop();
+				core0_state[-1].last_updated(millis());
 			}
 
 			else if(buttons[Button::UP].has_changed())
 			{
-				core0_state[-1] = State(States::Menu::alarm);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state[-1] = States::Menu::alarm;
 			}
 
 			else if(buttons[Button::CENTER].has_changed())
 			{
-				core0_state[-1] = State(States::Date::year);
-
-				buttons.lambda(Button::static_acknowledge);
-				encoder.acknowledge();
+				core0_state.push(States::Date::year);
 			}
 
-			else if(millis() - core0_state[-1].start_time() >= 10000)
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
 			{
-				core0_state[-1] = States::Home::main;
-				return;
+				core0_state.pop();  // Home | Menu[Date]
 			}
+
+			buttons.lambda(Button::static_acknowledge);
+			encoder.acknowledge();
 		}
 	}
 
@@ -271,36 +239,235 @@ namespace States
 		namespace Menu
 		{
 			void alarms()
-			{}
+			{
+				using namespace Global::Inputs;
+				using namespace Global::State;
+
+				if(buttons[Button::LEFT].has_changed())
+				{
+					core0_state.pop();  // Home | Menu[Alarm] | Alarm Menu[Alarms]
+					core0_state[-1].last_updated(millis());
+				}
+
+				else if(buttons[Button::UP].has_changed())
+				{
+					if(States::Alarm::SELECTED_ALARM != 0)
+					{
+						States::Alarm::SELECTED_ALARM -= 1;
+					}
+				}
+
+				else if(buttons[Button::CENTER].has_changed())
+				{
+					core0_state.push(States::Alarm::Selected::edit);
+				}
+
+				else if(buttons[Button::DOWN].has_changed())
+				{
+					States::Alarm::SELECTED_ALARM += 1;
+					if(States::Alarm::SELECTED_ALARM == Global::Time::alarms.size()-1)
+					{
+						core0_state[-1] = States::Alarm::Menu::new_alarm;
+					}
+				}
+
+				else if(millis() - core0_state[-1].last_updated() >= 10000)
+				{
+					core0_state.pop(2);  // Home | Menu[Alarm] | Alarm Menu[Alarms]
+				}
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
 
 
 			void new_alarm()
-			{}
+			{
+				using namespace Global::Inputs;
+				using namespace Global::State;
 
+				if(buttons[Button::LEFT].has_changed())
+				{
+					core0_state.pop();  // Home | Menu[Alarm] | Alarm Menu[New]
+					core0_state[-1].last_updated(millis());
+				}
 
+				else if(buttons[Button::UP].has_changed() && Global::Time::alarms.size() != 0)
+				{
+					States::Alarm::SELECTED_ALARM -= 1;
+					core0_state[-1] = States::Alarm::Menu::alarms;
+				}
+
+				else if(buttons[Button::CENTER].has_changed())
+				{
+					core0_state.push(States::Alarm::Selected::edit);
+				}
+
+				else if(millis() - core0_state[-1].last_updated() >= 10000)
+				{
+					core0_state.pop(2);  // Home | Menu[Alarm] | Alarm Menu[New]
+				}
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
 		}
 
 
-		namespace Seletected
+		namespace Selected
 		{
-			void delete_alarm()
-			{}
-
-
 			void edit()
-			{}
+			{
+				using namespace Global::Inputs;
+				using namespace Global::State;
+
+				if(buttons[Button::LEFT].has_changed())
+				{
+					core0_state.pop();  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit]
+					core0_state[-1].last_updated(millis());
+				}
+
+				else if(buttons[Button::CENTER].has_changed())
+				{
+					core0_state.push(States::Alarm::Selected::Edit::hour);
+					Global::Time::alarms.push(::Alarm(8, 0));
+				}
+
+				else if(buttons[Button::DOWN].has_changed())
+				{
+					core0_state[-1] = States::Alarm::Selected::delete_alarm;
+				}
+
+				else if(millis() - core0_state[-1].last_updated() >= 10000)
+				{
+					core0_state.pop(3);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit]
+				}
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+
+			void delete_alarm()
+			{
+				using namespace Global::Inputs;
+				using namespace Global::State;
+
+				if(buttons[Button::LEFT].has_changed())
+				{
+					core0_state.pop();  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Delete]
+					core0_state[-1].last_updated(millis());
+				}
+
+				else if(buttons[Button::UP].has_changed())
+				{
+					core0_state[-1] = States::Alarm::Selected::edit;
+				}
+
+				else if(buttons[Button::CENTER].has_changed())
+				{
+					Global::Time::alarms.pop();
+					core0_state.pop(3);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Delete]
+				}
+
+				else if(millis() - core0_state[-1].last_updated() >= 10000)
+				{
+					core0_state.pop(3);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Delete]
+				}
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
 
 
 			namespace Edit
 			{
 				void hour()
-				{}
+				{
+					using namespace Global::Inputs;
+					using namespace Global::State;
+
+					if(encoder.has_changed())
+					{
+						if(encoder.last_changed() >= 500)
+						{
+							int16_t hour = (int16_t)Global::Time::datetime.hour() + encoder.change();
+							if(23 < hour)
+							{
+								hour = 23;
+							}
+							if(hour < 0)
+							{
+								hour = 0;
+							}
+							Global::Time::datetime.hour(hour);
+
+							buttons.lambda(Button::static_acknowledge);
+							encoder.acknowledge();
+							core0_state[-1].last_updated(millis());
+						}
+					}
+
+					else if(buttons[Button::CENTER].has_changed())
+					{
+						core0_state[-1] = States::Alarm::Selected::Edit::minute;
+
+						buttons.lambda(Button::static_acknowledge);
+						encoder.acknowledge();
+					}
+
+					else if(millis() - core0_state[-1].last_updated() >= 10000)
+					{
+						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Hour]
+
+						buttons.lambda(Button::static_acknowledge);
+						encoder.acknowledge();	
+					}
+				}
 
 
 				void minute()
-				{}
+				{
+					using namespace Global::Inputs;
+					using namespace Global::State;
 
+					if(encoder.has_changed())
+					{
+						if(encoder.last_changed() >= 500)
+						{
+							int16_t minute = (int16_t)Global::Time::datetime.minute() + encoder.change();
+							if(59 < minute)
+							{
+								minute = 59;
+							}
+							if(minute < 0)
+							{
+								minute = 0;
+							}
+							Global::Time::datetime.minute(minute);
 
+							buttons.lambda(Button::static_acknowledge);
+							encoder.acknowledge();
+							core0_state[-1].last_updated(millis());
+						}
+					}
+
+					else if(buttons[Button::CENTER].has_changed())
+					{
+						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Minute]
+						
+						buttons.lambda(Button::static_acknowledge);
+						encoder.acknowledge();
+					}
+
+					else if(millis() - core0_state[-1].last_updated() >= 10000)
+					{
+						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Minute]
+
+						buttons.lambda(Button::static_acknowledge);
+						encoder.acknowledge();	
+					}
+				}
 			}
 		}
 
@@ -310,11 +477,11 @@ namespace States
 			void start()
 			{
 				Global::State::core0_state[-1] = States::Alarm::Alarm::playing;
-				Global::Audio::start = millis();
 
 				Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
 
 				Global::Inputs::buttons.lambda(Button::static_acknowledge);
+				Global::Inputs::encoder.acknowledge();
 			}
 
 
@@ -323,9 +490,9 @@ namespace States
 				using namespace Global::Inputs;
 				using namespace Global::State;
 
-				if(millis() - Global::Audio::start >= 300000)
+				if(millis() - core0_state[-1].last_updated() >= 300000)
 				{
-					core0_state[-1] = States::Alarm::Alarm::stop;
+					States::Alarm::Alarm::stop();
 					return;
 				}
 
@@ -334,7 +501,7 @@ namespace States
 				{
 					if(buttons[x].has_changed() && core0_state[-1] != States::Alarm::Alarm::stop)
 					{
-						core0_state[-1] = States::Alarm::Alarm::stop;
+						States::Alarm::Alarm::stop();
 						buttons.lambda(Button::static_acknowledge);
 						return;
 					}
@@ -346,7 +513,7 @@ namespace States
 			{
 				Global::Audio::player.stop();
 				Global::State::core0_state.pop();
-				Global::State::core0_state[-1].start_time(millis());
+				Global::State::core0_state[-1].last_updated(millis());
 
 				Global::Inputs::buttons.lambda(Button::static_acknowledge);
 			}
@@ -357,7 +524,8 @@ namespace States
 	namespace Time
 	{
 		void hour()
-		{}
+		{
+		}
 
 
 		void minute()

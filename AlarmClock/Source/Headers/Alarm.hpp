@@ -15,7 +15,7 @@ class Alarm
 		uint8_t _hour;
 		uint8_t _minute;
 
-		unsigned long _last_dismiss;
+		unsigned long _last_dismissed;
 		// The timestamp at which an alarm was last dismissed. Used to determine when 
 
 	public:
