@@ -23,7 +23,8 @@ class StaticList
 		void lambda(void(*function)(T& value));
 		size_t max();
 		T peek();
-		T pop(size_t amount=1);
+		T pop();
+		void pop(size_t amount);
 		void push(T value);
 		bool remove(int index);
 		uint8_t size();

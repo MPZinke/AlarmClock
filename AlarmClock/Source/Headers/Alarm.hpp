@@ -22,6 +22,11 @@ class Alarm
 		Alarm();
 		Alarm(uint8_t hour, uint8_t minute);
 
+		uint8_t hour();
+		void hour(uint8_t new_hour);
+		uint8_t minute();
+		void minute(uint8_t new_minute);
+
 		void dismiss();
 
 		Alarm& operator=(unsigned long duration_seconds);

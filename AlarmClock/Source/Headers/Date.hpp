@@ -14,7 +14,7 @@ class Date
 		uint8_t _day;
 
 	public:
-		enum
+		enum Months
 		{
 			JANUARY=1,
 			FEBRUARY=2,

@@ -10,6 +10,7 @@
 #include "../Headers/Alarm.hpp"
 #include "../Headers/Button.hpp"
 #include "../Headers/Core1.hpp"
+#include "../Headers/Date.hpp"
 #include "../Headers/Datetime.hpp"
 #include "../Headers/Display.hpp"
 #include "../Headers/Encoder.hpp"
@@ -391,7 +392,8 @@ namespace States
 					{
 						if(encoder.last_changed() >= 500)
 						{
-							int16_t hour = (int16_t)Global::Time::datetime.hour() + encoder.change();
+							int16_t hour = (int16_t)Global::Time::alarms[States::Alarm::SELECTED_ALARM].hour();
+							hour += encoder.change();
 							if(23 < hour)
 							{
 								hour = 23;
@@ -400,7 +402,7 @@ namespace States
 							{
 								hour = 0;
 							}
-							Global::Time::datetime.hour(hour);
+							Global::Time::alarms[States::Alarm::SELECTED_ALARM].hour(hour);
 
 							buttons.lambda(Button::static_acknowledge);
 							encoder.acknowledge();
@@ -435,7 +437,8 @@ namespace States
 					{
 						if(encoder.last_changed() >= 500)
 						{
-							int16_t minute = (int16_t)Global::Time::datetime.minute() + encoder.change();
+							int16_t minute = (int16_t)Global::Time::alarms[States::Alarm::SELECTED_ALARM].minute();
+							minute += encoder.change();
 							if(59 < minute)
 							{
 								minute = 59;
@@ -444,7 +447,7 @@ namespace States
 							{
 								minute = 0;
 							}
-							Global::Time::datetime.minute(minute);
+							Global::Time::alarms[States::Alarm::SELECTED_ALARM].minute(minute);
 
 							buttons.lambda(Button::static_acknowledge);
 							encoder.acknowledge();
@@ -525,11 +528,90 @@ namespace States
 	{
 		void hour()
 		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(encoder.has_changed())
+			{
+				if(encoder.last_changed() >= 500)
+				{
+					int16_t hour = (int16_t)Global::Time::datetime.hour() + encoder.change();
+					if(23 < hour)
+					{
+						hour = 23;
+					}
+					if(hour < 0)
+					{
+						hour = 0;
+					}
+					Global::Time::datetime.hour(hour);
+
+					buttons.lambda(Button::static_acknowledge);
+					encoder.acknowledge();
+					core0_state[-1].last_updated(millis());
+				}
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state[-1] = States::Time::minute;
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
+			{
+				core0_state.pop(2);  // Home | Menu[Time] | Hour
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();	
+			}
 		}
 
 
 		void minute()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(encoder.has_changed())
+			{
+				if(encoder.last_changed() >= 500)
+				{
+					int16_t minute = (int16_t)Global::Time::datetime.minute() + encoder.change();
+					if(23 < minute)
+					{
+						minute = 23;
+					}
+					if(minute < 0)
+					{
+						minute = 0;
+					}
+					Global::Time::datetime.minute(minute);
+
+					buttons.lambda(Button::static_acknowledge);
+					encoder.acknowledge();
+					core0_state[-1].last_updated(millis());
+				}
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state[-1] = States::Alarm::Selected::Edit::minute;
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
+			{
+				core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Hour]
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();	
+			}
+		}
 	}
 
 
@@ -537,19 +619,147 @@ namespace States
 	{
 		void year()
 		{
-			// If 10 seconds have passed
-			if(Global::Inputs::encoder.has_changed() && Global::Inputs::encoder.last_changed() >= 600000)
-			{
+			using namespace Global::Inputs;
+			using namespace Global::State;
 
+			if(encoder.has_changed())
+			{
+				if(encoder.last_changed() >= 500)
+				{
+					int16_t year = (int16_t)Global::Time::datetime.year() + encoder.change();
+					if(23 < year)
+					{
+						year = 23;
+					}
+					if(year < 0)
+					{
+						year = 0;
+					}
+					Global::Time::datetime.year(year);
+
+					buttons.lambda(Button::static_acknowledge);
+					encoder.acknowledge();
+					core0_state[-1].last_updated(millis());
+				}
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state[-1] = States::Date::month;
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
+			{
+				core0_state.pop(2);  // Home | Menu[Date] | Date[Year]
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();	
 			}
 		}
 
 
 		void month()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(encoder.has_changed())
+			{
+				if(encoder.last_changed() >= 500)
+				{
+					int16_t month = (int16_t)Global::Time::datetime.month() + encoder.change();
+					if(12 < month)
+					{
+						month = 12;
+					}
+					if(month < 1)
+					{
+						month = 1;
+					}
+					Global::Time::datetime.month(month);
+
+					buttons.lambda(Button::static_acknowledge);
+					encoder.acknowledge();
+					core0_state[-1].last_updated(millis());
+				}
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state[-1] = States::Date::day;
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
+			{
+				core0_state.pop(2);  // Home | Menu[Date] | Date[Month]
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();	
+			}
+		}
 
 
 		void day()
-		{}
+		{
+			using namespace Global::Inputs;
+			using namespace Global::State;
+
+			if(encoder.has_changed())
+			{
+				if(encoder.last_changed() >= 500)
+				{
+					int16_t day = (int16_t)Global::Time::datetime.day() + encoder.change();
+					uint8_t month = Global::Time::datetime.month();
+					uint8_t year = Global::Time::datetime.year();
+					if(month == ::Date::FEBRUARY && day > 28)
+					{
+						day = 28 + year & 0b11 != 0;
+					}
+					else if(day > 30 && 
+						(month == ::Date::APRIL || month == ::Date::JUNE || month == ::Date::SEPTEMBER
+						|| month == ::Date::NOVEMBER)
+					)
+					{
+						day = 30;
+					}
+					else if(day > 31)
+					{
+						day = 31;
+					}
+
+					if(day < 1)
+					{
+						day = 1;
+					}
+					Global::Time::datetime.day(day);
+
+					buttons.lambda(Button::static_acknowledge);
+					encoder.acknowledge();
+					core0_state[-1].last_updated(millis());
+				}
+			}
+
+			else if(buttons[Button::CENTER].has_changed())
+			{
+				core0_state.pop(2);
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();
+			}
+
+			else if(millis() - core0_state[-1].last_updated() >= 10000)
+			{
+				core0_state.pop(2);  // Home | Menu[Date] | Date[Day]
+
+				buttons.lambda(Button::static_acknowledge);
+				encoder.acknowledge();	
+			}
+		}
 	}
 }

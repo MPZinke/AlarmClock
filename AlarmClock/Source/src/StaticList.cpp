@@ -58,13 +58,19 @@ class StaticList
 			return _values[_size-1];
 		}
 
-		T pop(size_t amount/* =1 */)
+		T pop()
+		{
+			assert(_size != 0);
+
+			_size--;
+			return _values[_size];
+		}
+
+		void pop(size_t amount)
 		{
 			assert(_size >= amount);
 
-			size_t previous_size = _size;
 			_size -= amount;
-			return _values[previous_size];
 		}
 
 		void push(T value)

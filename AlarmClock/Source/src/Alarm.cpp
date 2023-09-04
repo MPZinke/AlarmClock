@@ -23,6 +23,30 @@ Alarm::Alarm(uint8_t hour, uint8_t minute)
 }
 
 
+uint8_t Alarm::hour()
+{
+	return _hour;
+}
+
+
+void Alarm::hour(uint8_t new_hour)
+{
+	_hour = new_hour;
+}
+
+
+uint8_t Alarm::minute()
+{
+	return _minute;
+}
+
+
+void Alarm::minute(uint8_t new_minute)
+{
+	_minute = new_minute;
+}
+
+
 void Alarm::dismiss()
 {
 	_last_dismissed = millis();
