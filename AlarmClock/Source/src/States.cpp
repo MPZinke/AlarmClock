@@ -101,6 +101,7 @@ namespace States
 			if(buttons[Button::CENTER].has_changed())
 			{
 				Global::State::core0_state.push(States::Menu::alarm);
+				Global::State::core1_state.push(Core1::Menu::alarm);
 			}
 
 			Global::Inputs::encoder.acknowledge();
@@ -721,8 +722,8 @@ namespace States
 					{
 						day = 28 + year & 0b11 != 0;
 					}
-					else if(day > 30 && 
-						(month == ::Date::APRIL || month == ::Date::JUNE || month == ::Date::SEPTEMBER
+					else if(day > 30
+					  && (month == ::Date::APRIL || month == ::Date::JUNE || month == ::Date::SEPTEMBER
 						|| month == ::Date::NOVEMBER)
 					)
 					{

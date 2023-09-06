@@ -25,6 +25,10 @@ namespace Core1
 	}
 
 
+	void no_op()
+	{}
+
+
 	void display_time()
 	{
 		Time& display_time = (Time&)Global::display;
@@ -41,5 +45,14 @@ namespace Core1
 		Global::display = (Time&)Global::Time::datetime;
 
 		Global::display.update();
+	}
+
+	namespace Menu
+	{
+		void alarm()
+		{
+			Global::display.display_menu_alarm();
+			Global::State::core1_state[-1] = no_op;
+		}
 	}
 }

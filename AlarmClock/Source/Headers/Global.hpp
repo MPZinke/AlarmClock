@@ -26,8 +26,8 @@ namespace Global
 {
 	namespace State
 	{
-		extern StaticList<3, States::State> core0_state;
-		extern StaticList<3, States::State> core1_state;
+		extern StaticList<10, States::State> core0_state;
+		extern StaticList<10, States::State> core1_state;
 	}
 
 	namespace Audio

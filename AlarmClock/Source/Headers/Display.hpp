@@ -36,6 +36,9 @@ class Display
 		Display(Date& date, Time& time);
 
 		void begin();
+
+		void display_menu_alarm();
+
 		void update();
 
 		operator Date&();
@@ -53,5 +56,4 @@ class Display
 
 		void print_date();
 		void print_time();
-
 };

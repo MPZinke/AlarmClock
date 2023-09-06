@@ -87,6 +87,18 @@ void Display::update()
 }
 
 
+void Display::display_menu_alarm()
+{
+	_eInk.setTextSize(3);
+	_eInk.setCursor(10, 10);
+	_eInk.print("Alarms");
+	_eInk.setCursor(10, 30);
+	_eInk.print("Time");
+	_eInk.setCursor(10, 50);
+	_eInk.print("Date");
+}
+
+
 void Display::print_date()
 {
 	char date_text[6] = "00-00";

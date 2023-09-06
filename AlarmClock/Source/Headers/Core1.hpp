@@ -10,4 +10,10 @@ Functions that run on or for Core 1
 {
 	void main();
 	void display_time();
+
+
+	namespace Menu
+	{
+		void alarm();
+	}
 }

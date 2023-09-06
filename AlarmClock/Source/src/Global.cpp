@@ -18,8 +18,8 @@ namespace Global
 {
 	namespace State
 	{
-		StaticList<3, States::State> core0_state(States::State(States::Home::main));
-		StaticList<3, States::State> core1_state(Core1::display_time);
+		StaticList<10, States::State> core0_state(States::State(States::Home::main));
+		StaticList<10, States::State> core1_state(Core1::display_time);
 	}
 
 	namespace Audio

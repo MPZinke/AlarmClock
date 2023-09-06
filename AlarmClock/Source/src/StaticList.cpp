@@ -161,4 +161,4 @@ class StaticList
 
 template class StaticList<10, Alarm>;
 template class StaticList<5, Button>;
-template class StaticList<3, States::State>;
+template class StaticList<10, States::State>;
