@@ -105,7 +105,7 @@ namespace States
 			}
 
 			Global::Inputs::encoder.acknowledge();
-			Global::Inputs::buttons.lambda(Button::static_acknowledge);
+			Global::Inputs::buttons(Button::static_acknowledge);
 		}
 
 
@@ -163,7 +163,7 @@ namespace States
 				core0_state.pop();  // Home | Menu[Alarm]
 			}
 
-			buttons.lambda(Button::static_acknowledge);
+			buttons(Button::static_acknowledge);
 			encoder.acknowledge();
 		}
 
@@ -227,7 +227,7 @@ namespace States
 				core0_state.pop();  // Home | Menu[Date]
 			}
 
-			buttons.lambda(Button::static_acknowledge);
+			buttons(Button::static_acknowledge);
 			encoder.acknowledge();
 		}
 	}
@@ -278,7 +278,7 @@ namespace States
 					core0_state.pop(2);  // Home | Menu[Alarm] | Alarm Menu[Alarms]
 				}
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -310,7 +310,7 @@ namespace States
 					core0_state.pop(2);  // Home | Menu[Alarm] | Alarm Menu[New]
 				}
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 		}
@@ -345,7 +345,7 @@ namespace States
 					core0_state.pop(3);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit]
 				}
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -377,7 +377,7 @@ namespace States
 					core0_state.pop(3);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Delete]
 				}
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -405,7 +405,7 @@ namespace States
 							}
 							Global::Time::alarms[States::Alarm::SELECTED_ALARM].hour(hour);
 
-							buttons.lambda(Button::static_acknowledge);
+							buttons(Button::static_acknowledge);
 							encoder.acknowledge();
 							core0_state[-1].last_updated(millis());
 						}
@@ -415,7 +415,7 @@ namespace States
 					{
 						core0_state[-1] = States::Alarm::Selected::Edit::minute;
 
-						buttons.lambda(Button::static_acknowledge);
+						buttons(Button::static_acknowledge);
 						encoder.acknowledge();
 					}
 
@@ -423,7 +423,7 @@ namespace States
 					{
 						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Hour]
 
-						buttons.lambda(Button::static_acknowledge);
+						buttons(Button::static_acknowledge);
 						encoder.acknowledge();	
 					}
 				}
@@ -450,7 +450,7 @@ namespace States
 							}
 							Global::Time::alarms[States::Alarm::SELECTED_ALARM].minute(minute);
 
-							buttons.lambda(Button::static_acknowledge);
+							buttons(Button::static_acknowledge);
 							encoder.acknowledge();
 							core0_state[-1].last_updated(millis());
 						}
@@ -460,7 +460,7 @@ namespace States
 					{
 						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Minute]
 						
-						buttons.lambda(Button::static_acknowledge);
+						buttons(Button::static_acknowledge);
 						encoder.acknowledge();
 					}
 
@@ -468,7 +468,7 @@ namespace States
 					{
 						core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Minute]
 
-						buttons.lambda(Button::static_acknowledge);
+						buttons(Button::static_acknowledge);
 						encoder.acknowledge();	
 					}
 				}
@@ -484,7 +484,7 @@ namespace States
 
 				Global::Audio::player.playFolderTrack(1, Audio::Tracks::ALARM);
 
-				Global::Inputs::buttons.lambda(Button::static_acknowledge);
+				Global::Inputs::buttons(Button::static_acknowledge);
 				Global::Inputs::encoder.acknowledge();
 			}
 
@@ -506,7 +506,7 @@ namespace States
 					if(buttons[x].has_changed() && core0_state[-1] != States::Alarm::Alarm::stop)
 					{
 						States::Alarm::Alarm::stop();
-						buttons.lambda(Button::static_acknowledge);
+						buttons(Button::static_acknowledge);
 						return;
 					}
 				}
@@ -519,7 +519,7 @@ namespace States
 				Global::State::core0_state.pop();
 				Global::State::core0_state[-1].last_updated(millis());
 
-				Global::Inputs::buttons.lambda(Button::static_acknowledge);
+				Global::Inputs::buttons(Button::static_acknowledge);
 			}
 		}
 	}
@@ -547,7 +547,7 @@ namespace States
 					}
 					Global::Time::datetime.hour(hour);
 
-					buttons.lambda(Button::static_acknowledge);
+					buttons(Button::static_acknowledge);
 					encoder.acknowledge();
 					core0_state[-1].last_updated(millis());
 				}
@@ -557,7 +557,7 @@ namespace States
 			{
 				core0_state[-1] = States::Time::minute;
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -565,7 +565,7 @@ namespace States
 			{
 				core0_state.pop(2);  // Home | Menu[Time] | Hour
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();	
 			}
 		}
@@ -591,7 +591,7 @@ namespace States
 					}
 					Global::Time::datetime.minute(minute);
 
-					buttons.lambda(Button::static_acknowledge);
+					buttons(Button::static_acknowledge);
 					encoder.acknowledge();
 					core0_state[-1].last_updated(millis());
 				}
@@ -601,7 +601,7 @@ namespace States
 			{
 				core0_state[-1] = States::Alarm::Selected::Edit::minute;
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -609,7 +609,7 @@ namespace States
 			{
 				core0_state.pop(4);  // Home | Menu[Alarm] | Alarm Menu[New] | Selected[Edit] | Edit[Hour]
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();	
 			}
 		}
@@ -638,7 +638,7 @@ namespace States
 					}
 					Global::Time::datetime.year(year);
 
-					buttons.lambda(Button::static_acknowledge);
+					buttons(Button::static_acknowledge);
 					encoder.acknowledge();
 					core0_state[-1].last_updated(millis());
 				}
@@ -648,7 +648,7 @@ namespace States
 			{
 				core0_state[-1] = States::Date::month;
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -656,7 +656,7 @@ namespace States
 			{
 				core0_state.pop(2);  // Home | Menu[Date] | Date[Year]
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();	
 			}
 		}
@@ -682,7 +682,7 @@ namespace States
 					}
 					Global::Time::datetime.month(month);
 
-					buttons.lambda(Button::static_acknowledge);
+					buttons(Button::static_acknowledge);
 					encoder.acknowledge();
 					core0_state[-1].last_updated(millis());
 				}
@@ -692,7 +692,7 @@ namespace States
 			{
 				core0_state[-1] = States::Date::day;
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -700,7 +700,7 @@ namespace States
 			{
 				core0_state.pop(2);  // Home | Menu[Date] | Date[Month]
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();	
 			}
 		}
@@ -740,7 +740,7 @@ namespace States
 					}
 					Global::Time::datetime.day(day);
 
-					buttons.lambda(Button::static_acknowledge);
+					buttons(Button::static_acknowledge);
 					encoder.acknowledge();
 					core0_state[-1].last_updated(millis());
 				}
@@ -750,7 +750,7 @@ namespace States
 			{
 				core0_state.pop(2);
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();
 			}
 
@@ -758,7 +758,7 @@ namespace States
 			{
 				core0_state.pop(2);  // Home | Menu[Date] | Date[Day]
 
-				buttons.lambda(Button::static_acknowledge);
+				buttons(Button::static_acknowledge);
 				encoder.acknowledge();	
 			}
 		}

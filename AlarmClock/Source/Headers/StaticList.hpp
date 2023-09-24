@@ -20,7 +20,7 @@ class StaticList
 		StaticList(T start_value);
 		StaticList(T start_value0, T start_value1, ...);
 
-		void lambda(void(*function)(T& value));
+		void operator()(void(*function)(T& value));
 		size_t max();
 		T peek();
 		T pop();
