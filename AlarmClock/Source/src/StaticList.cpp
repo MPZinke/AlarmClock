@@ -11,7 +11,6 @@
 #include "../Headers/States.hpp"
 
 
-
 template<size_t S, class T>
 class StaticList
 {

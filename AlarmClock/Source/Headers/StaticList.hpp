@@ -9,9 +9,6 @@
 #include "States.hpp"
 
 
-class Alarm;
-
-
 template<size_t S, class T>
 class StaticList
 {
@@ -20,7 +17,6 @@ class StaticList
 		StaticList(T start_value);
 		StaticList(T start_value0, T start_value1, ...);
 
-		void operator()(void(*function)(T& value));
 		size_t max();
 		T peek();
 		T pop();
@@ -29,6 +25,7 @@ class StaticList
 		bool remove(int index);
 		uint8_t size();
 
+		void operator()(void(*function)(T& value));
 		StaticList& operator+=(T value);
 		T operator[](int index) const;  // Getter
 		T& operator[](int index);  // Setter
